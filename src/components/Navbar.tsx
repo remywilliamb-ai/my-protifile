@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Sun, Moon } from 'lucide-react';
+import { Menu, X, Sun, Moon, Coffee } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import BuyMeCoffeeModal from './BuyMeCoffeeModal';
 
 interface NavbarProps {
   isDarkMode: boolean;
@@ -10,6 +11,7 @@ export default function Navbar({ isDarkMode }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const [isCoffeeOpen, setIsCoffeeOpen] = useState(false);
 
   const navLinks = [
     { name: 'Home', href: '#home' },
@@ -121,6 +123,17 @@ export default function Navbar({ isDarkMode }: NavbarProps) {
 
         {/* Action Controls */}
         <div className="flex items-center space-x-3">
+          {/* Buy Me A Coffee (Trigger Modal) */}
+          <button
+            onClick={() => setIsCoffeeOpen(true)}
+            className="inline-flex items-center space-x-1.5 text-xs font-mono font-bold tracking-wider text-slate-900 bg-amber-400 hover:bg-amber-300 hover:shadow-md hover:shadow-amber-400/10 active:scale-95 px-3.5 py-2 rounded-lg transition-all border border-amber-300 shadow-sm cursor-pointer outline-none"
+            id="cta-nav-coffee"
+            title="Buy Remy a Coffee"
+          >
+            <Coffee className="w-3.5 h-3.5 text-slate-900 fill-slate-900 animate-pulse" />
+            <span className="hidden xs:inline">COFFEE</span>
+          </button>
+
           {/* Social Quick Contact (Dynamic Hover CTA) */}
           <a
             href="#contact"
@@ -172,6 +185,16 @@ export default function Navbar({ isDarkMode }: NavbarProps) {
                   </a>
                 );
               })}
+              <button
+                onClick={() => {
+                  setIsCoffeeOpen(true);
+                  setIsOpen(false);
+                }}
+                className="w-full flex items-center justify-center space-x-2 text-sm font-mono tracking-widest text-slate-900 bg-amber-400 hover:bg-amber-300 py-3 rounded-lg shadow-sm font-bold border border-amber-300 cursor-pointer outline-none"
+              >
+                <Coffee className="w-4 h-4 text-slate-900 fill-slate-900 animate-pulse" />
+                <span>BUY ME A COFFEE</span>
+              </button>
               <a
                 href="#contact"
                 onClick={(e) => handleClick(e, 'contact')}
@@ -183,6 +206,11 @@ export default function Navbar({ isDarkMode }: NavbarProps) {
           </motion.div>
         )}
       </AnimatePresence>
+      {/* Interactive Support Form Modal */}
+      <BuyMeCoffeeModal
+        isOpen={isCoffeeOpen}
+        onClose={() => setIsCoffeeOpen(false)}
+      />
     </header>
   );
 }
