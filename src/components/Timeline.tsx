@@ -1,0 +1,122 @@
+import { motion } from 'motion/react';
+import { Calendar, Award, Code2, Cpu, CheckCircle2, ChevronRight } from 'lucide-react';
+import { timelineData } from '../data';
+
+export default function Timeline() {
+  // Mapping milestones to appropriate status icons
+  const iconsList = [Award, Code2, Cpu, CheckCircle2];
+
+  return (
+    <section
+      id="journey"
+      className="relative py-24 bg-[#f0f4f8] dark:bg-slate-950 overflow-hidden"
+    >
+      {/* Dynamic atmospheric shapes */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-[10%] left-[5%] w-96 h-96 rounded-full bg-blue-500/5 dark:bg-blue-600/5 blur-[120px]" />
+        <div className="absolute bottom-[10%] right-[5%] w-[32rem] h-[32rem] rounded-full bg-indigo-500/5 dark:bg-indigo-300/5 blur-[100px]" />
+        
+        {/* Futuristic circuit trace line */}
+        <div className="absolute top-0 bottom-0 left-[50%] -translate-x-1/2 w-[1px] bg-gradient-to-b from-transparent via-blue-500/20 to-transparent hidden md:block" />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10" id="timeline-container">
+        {/* Section Header */}
+        <div className="flex flex-col items-center text-center space-y-4 mb-20" id="timeline-header">
+          <span className="font-mono text-xs text-blue-600 dark:text-blue-400 font-bold uppercase tracking-widest bg-blue-500/10 dark:bg-blue-400/10 px-3.5 py-1.5 rounded-full border border-blue-500/15 dark:border-blue-400/20">
+            Education Timeline
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-bold font-sans tracking-tight text-slate-950 dark:text-white">
+            Level 5 Software Engineering Journey
+          </h2>
+          <p className="text-slate-500 dark:text-slate-400 max-w-xl text-center text-sm leading-relaxed">
+            The incremental academic progression of a software engineer, mapping foundations in hardware straight through to micro-service APIs.
+          </p>
+          <div className="h-1 w-12 bg-blue-600 dark:bg-blue-400 rounded-full" />
+        </div>
+
+        {/* Timeline body wrapper */}
+        <div className="relative" id="timeline-body">
+          {/* Vertical central spine line for desktop / left margin line for mobile */}
+          <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-[2px] bg-slate-205 dark:bg-slate-800/80 md:-translate-x-1/2" />
+
+          {/* Cards collection */}
+          <div className="space-y-12" id="timeline-events-list">
+            {timelineData.map((ev, index) => {
+              const IconComponent = iconsList[index % iconsList.length];
+              const isEven = index % 2 === 0;
+
+              return (
+                <div
+                  key={index}
+                  className={`relative flex flex-col md:flex-row items-start ${
+                    isEven ? 'md:justify-start' : 'md:justify-end'
+                  }`}
+                  id={`timeline-node-${index}`}
+                >
+                  {/* Timeline node bullet locator element */}
+                  <div className="absolute left-4 md:left-1/2 top-4 md:top-8 -translate-x-[15px] md:-translate-x-1/2 z-20 flex items-center justify-center w-[32px] h-[32px] rounded-full bg-white dark:bg-slate-950 border-2 border-blue-500 dark:border-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.3)] text-blue-600 dark:text-blue-400 transition-transform duration-300 group-hover:scale-110">
+                    <IconComponent className="w-3.5 h-3.5" />
+                  </div>
+
+                  {/* Context Card Box container (alternating side spacing on desktop) */}
+                  <div
+                    className={`w-full md:w-[45%] pl-12 md:pl-0 ${
+                      isEven ? 'md:pr-12 text-left' : 'md:pl-12 text-left'
+                    }`}
+                  >
+                    <motion.div
+                      initial={{ opacity: 0, x: isEven ? -40 : 40 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, margin: '-100px' }}
+                      transition={{ duration: 0.5, ease: 'easeOut' }}
+                      className="sleek-card group p-6 block relative"
+                      id={`timeline-card-${index}`}
+                    >
+                      {/* Period indicator */}
+                      <span className="inline-flex items-center space-x-1 font-mono text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-500/10 dark:bg-blue-400/10 py-1.5 px-3 rounded-full mb-4">
+                        <Calendar className="w-3.5 h-3.5" />
+                        <span>{ev.period}</span>
+                      </span>
+
+                      {/* Header content */}
+                      <h3 className="text-lg font-extrabold text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-250 font-sans leading-tight">
+                        {ev.title}
+                      </h3>
+                      <h4 className="text-xs font-mono font-medium tracking-wide text-slate-400 uppercase mt-1 mb-4 leading-none">
+                        {ev.subtitle}
+                      </h4>
+
+                      {/* Description narrative body */}
+                      <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed mb-6">
+                        {ev.description}
+                      </p>
+
+                      {/* Micro skill bullet highlights */}
+                      <div className="border-t border-slate-100 dark:border-slate-850/50 pt-4" id={`timeline-skills-list-${index}`}>
+                        <div className="text-[10px] uppercase font-mono tracking-widest text-slate-400 mb-2.5 font-bold">
+                          Core Competencies
+                        </div>
+                        <div className="flex flex-wrap gap-1.5 text-left">
+                          {ev.skillsAcquired.map((skill, subIdx) => (
+                            <span
+                              key={subIdx}
+                              className="inline-flex items-center space-x-1 font-mono text-[10px] font-semibold text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-900 px-2.5 py-1 rounded-md"
+                            >
+                              <ChevronRight className="w-2.5 h-2.5 text-blue-500 shrink-0" />
+                              <span>{skill}</span>
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </motion.div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
