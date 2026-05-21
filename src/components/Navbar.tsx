@@ -4,10 +4,9 @@ import { motion, AnimatePresence } from 'motion/react';
 
 interface NavbarProps {
   isDarkMode: boolean;
-  toggleTheme: () => void;
 }
 
-export default function Navbar({ isDarkMode, toggleTheme }: NavbarProps) {
+export default function Navbar({ isDarkMode }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
@@ -66,7 +65,7 @@ export default function Navbar({ isDarkMode, toggleTheme }: NavbarProps) {
       id="navbar-header"
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-[#f0f4f8]/85 dark:bg-slate-950/85 backdrop-blur-xl shadow-md border-b border-white/60 dark:border-slate-800/50 py-3'
+          ? 'bg-white/95 backdrop-blur-xl shadow-md border-b border-blue-50 py-3'
           : 'bg-transparent py-5'
       }`}
     >
@@ -75,17 +74,17 @@ export default function Navbar({ isDarkMode, toggleTheme }: NavbarProps) {
         <a
           href="#home"
           onClick={(e) => handleClick(e, 'home')}
-          className="flex items-center space-x-2 text-xl font-bold tracking-wider text-blue-600 dark:text-blue-400 group"
+          className="flex items-center space-x-2 text-xl font-bold tracking-wider text-blue-600 group"
           id="nav-logo"
         >
-          <span className="font-mono text-xs text-blue-500 bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20 group-hover:bg-blue-500/20 transition-all leading-none">
+          <span className="font-mono text-xs text-blue-600 bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20 group-hover:bg-blue-500/20 transition-all leading-none">
             RW
           </span>
           <span className="relative overflow-hidden block">
-            <span className="inline-block transition-transform duration-300 group-hover:-translate-y-full">
+            <span className="inline-block transition-transform duration-300 group-hover:-translate-y-full text-slate-800">
               REMY WILLIAM
             </span>
-            <span className="absolute top-0 left-0 inline-block transition-transform duration-300 translate-y-full group-hover:translate-y-0 text-slate-800 dark:text-white font-semibold">
+            <span className="absolute top-0 left-0 inline-block transition-transform duration-300 translate-y-full group-hover:translate-y-0 text-blue-650 font-semibold">
               DEVELOPER
             </span>
           </span>
@@ -102,8 +101,8 @@ export default function Navbar({ isDarkMode, toggleTheme }: NavbarProps) {
                 onClick={(e) => handleClick(e, link.href.substring(1))}
                 className={`relative px-4 py-2 text-sm font-medium tracking-wide transition-colors duration-200 ${
                   isLinkActive
-                    ? 'text-blue-600 dark:text-blue-400'
-                    : 'text-slate-600 dark:text-slate-300 hover:text-blue-500 dark:hover:text-blue-400'
+                    ? 'text-blue-600 font-semibold'
+                    : 'text-slate-650 hover:text-blue-600'
                 }`}
                 id={`nav-link-${link.name.toLowerCase()}`}
               >
@@ -111,7 +110,7 @@ export default function Navbar({ isDarkMode, toggleTheme }: NavbarProps) {
                 {isLinkActive && (
                   <motion.span
                     layoutId="activeNavIndicator"
-                    className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-[3px] rounded-t bg-blue-600 dark:bg-blue-400"
+                    className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-[3px] rounded-t bg-blue-600"
                     transition={{ type: 'spring', stiffness: 350, damping: 30 }}
                   />
                 )}
@@ -122,21 +121,11 @@ export default function Navbar({ isDarkMode, toggleTheme }: NavbarProps) {
 
         {/* Action Controls */}
         <div className="flex items-center space-x-3">
-          {/* Theme Toggle Button */}
-          <button
-            onClick={toggleTheme}
-            className="p-2.5 rounded-full border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900 transition-all shadow-sm focus:outline-none"
-            aria-label="Toggle dark/light mode"
-            id="theme-toggler"
-          >
-            {isDarkMode ? <Sun className="w-4 h-4 text-blue-400" /> : <Moon className="w-4 h-4 text-slate-700" />}
-          </button>
-
           {/* Social Quick Contact (Dynamic Hover CTA) */}
           <a
             href="#contact"
             onClick={(e) => handleClick(e, 'contact')}
-            className="hidden sm:inline-flex items-center space-x-1 text-xs font-mono font-medium tracking-wider text-white bg-blue-600 hover:bg-blue-500 hover:shadow-lg hover:shadow-blue-500/20 active:scale-95 px-4 py-2 rounded-lg transition-all"
+            className="hidden sm:inline-flex items-center space-x-1 text-xs font-mono font-medium tracking-wider text-white bg-blue-600 hover:bg-blue-500 hover:shadow-lg hover:shadow-blue-500/20 active:scale-95 px-4 py-2 rounded-lg transition-all font-bold"
             id="cta-nav-contact"
           >
             HIRE REMY
@@ -145,7 +134,7 @@ export default function Navbar({ isDarkMode, toggleTheme }: NavbarProps) {
           {/* Mobile Hamburger Controls */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900 focus:outline-none"
+            className="md:hidden p-2 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 focus:outline-none"
             aria-label="Toggle mobile menu"
             id="mobile-nav-toggle"
           >
@@ -162,7 +151,7 @@ export default function Navbar({ isDarkMode, toggleTheme }: NavbarProps) {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="md:hidden overflow-hidden bg-[#f0f4f8]/95 dark:bg-slate-950/95 backdrop-blur-xl border-b border-slate-200 dark:border-slate-900 shadow-xl"
+            className="md:hidden overflow-hidden bg-white/95 backdrop-blur-xl border-b border-slate-200 shadow-xl"
             id="mobile-nav-panel"
           >
             <div className="px-6 py-5 flex flex-col space-y-4">
@@ -173,10 +162,10 @@ export default function Navbar({ isDarkMode, toggleTheme }: NavbarProps) {
                     key={link.name}
                     href={link.href}
                     onClick={(e) => handleClick(e, link.href.substring(1))}
-                    className={`text-base font-semibold py-2 border-b border-dashed border-slate-100 dark:border-slate-900 last:border-0 transition-colors ${
+                    className={`text-base font-semibold py-2 border-b border-dashed border-slate-100 last:border-0 transition-colors ${
                       isLinkActive
-                        ? 'text-blue-600 dark:text-blue-400 pl-2 border-l-2 border-l-blue-600 dark:border-l-blue-400'
-                        : 'text-slate-600 dark:text-slate-300'
+                        ? 'text-blue-600 pl-2 border-l-2 border-l-blue-600'
+                        : 'text-slate-700 hover:text-blue-600'
                     }`}
                   >
                     {link.name}

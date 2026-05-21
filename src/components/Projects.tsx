@@ -1,10 +1,16 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Github, ExternalLink, Library, Compass } from 'lucide-react';
+import { Github, ExternalLink, Library, Compass, Play, Search, Grid, ArrowRight, Video, Tv, Film, Calendar, Clapperboard, X, ChevronLeft, ChevronRight, Sliders, Sparkles, Check } from 'lucide-react';
 import { projectsData } from '../data';
 
 export default function Projects() {
   const [filter, setFilter] = useState<'all' | 'frontend' | 'fullstack'>('all');
+  const [selectedProject, setSelectedProject] = useState<string | null>(null);
+  
+  // FastMovie Interactive State
+  const [fastMovieSearch, setFastMovieSearch] = useState('');
+  const [activeCategory, setActiveCategory] = useState('HOME');
+  const [carouselOffset, setCarouselOffset] = useState(0);
 
   const categories = [
     { id: 'all', label: 'All Projects' },
@@ -17,35 +23,49 @@ export default function Projects() {
     return project.category === filter;
   });
 
+  // FastMovie Mock Movies
+  const fastMovieData = [
+    { title: 'Slaxx', year: 2026, genre: 'Horror', tag: 'Gaheza', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&auto=format&fit=crop&q=80' },
+    { title: 'Rocky Experience', year: 2025, tag: 'IMAX Series', genre: 'Action', image: 'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=400&auto=format&fit=crop&q=80' },
+    { title: 'Limitless Loop', year: 2026, tag: 'Gaheza', genre: 'Sci-Fi', image: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=400&auto=format&fit=crop&q=80' },
+    { title: 'Dark Void', year: 2024, tag: 'Movie', genre: 'Thriller', image: 'https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?w=400&auto=format&fit=crop&q=80' },
+    { title: 'Silent Run', year: 2025, tag: 'Gaheza', genre: 'Drama', image: 'https://images.unsplash.com/photo-1485433592409-9018e83a1f0d?w=400&auto=format&fit=crop&q=80' }
+  ];
+
+  const filteredFastMovies = fastMovieData.filter(m => 
+    m.title.toLowerCase().includes(fastMovieSearch.toLowerCase()) ||
+    m.genre.toLowerCase().includes(fastMovieSearch.toLowerCase())
+  );
+
   return (
     <section
       id="projects"
-      className="relative py-24 bg-[#f0f4f8] dark:bg-slate-900 overflow-hidden"
+      className="relative py-24 bg-white overflow-hidden"
     >
       {/* Decorative vector meshes */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[30%] left-[8%] w-[28rem] h-[28rem] rounded-full bg-blue-500/5 dark:bg-blue-600/5 blur-[120px]" />
-        <div className="absolute bottom-[20%] right-[10%] w-96 h-96 rounded-full bg-indigo-500/5 dark:bg-indigo-500/5 blur-[100px]" />
+        <div className="absolute top-[30%] left-[8%] w-[28rem] h-[28rem] rounded-full bg-blue-100/50 blur-[120px]" />
+        <div className="absolute bottom-[20%] right-[10%] w-96 h-96 rounded-full bg-blue-50/50 blur-[100px]" />
       </div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10" id="projects-container">
         {/* Section Header */}
         <div className="flex flex-col items-center text-center space-y-4 mb-16" id="projects-header">
-          <span className="font-mono text-xs text-blue-600 dark:text-blue-400 font-bold uppercase tracking-widest bg-blue-500/10 dark:bg-blue-400/10 px-3.5 py-1.5 rounded-full border border-blue-500/15 dark:border-blue-400/20">
+          <span className="font-mono text-xs text-blue-600 font-bold uppercase tracking-widest bg-blue-500/10 px-3.5 py-1.5 rounded-full border border-blue-500/20">
             Featured Portfolio
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold font-sans tracking-tight text-slate-950 dark:text-white">
+          <h2 className="text-3xl sm:text-4xl font-bold font-sans tracking-tight text-slate-900 mb-2">
             Practical Software Architectures
           </h2>
-          <p className="text-slate-500 dark:text-slate-400 max-w-xl text-center text-sm leading-relaxed">
+          <p className="text-slate-600 max-w-xl text-center text-sm leading-relaxed">
             A comprehensive catalog of applications focused on tokenized routes, clean data rendering, custom UX, and efficient databases.
           </p>
-          <div className="h-1 w-12 bg-blue-600 dark:bg-blue-400 rounded-full" />
+          <div className="h-1 w-12 bg-blue-600 rounded-full" />
         </div>
 
         {/* Categories Controls */}
         <div className="flex justify-center mb-12 animate-none" id="projects-filters">
-          <div className="inline-flex p-1.5 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border border-white/60 dark:border-slate-800/50 rounded-2xl">
+          <div className="inline-flex p-1.5 bg-slate-50 border border-slate-200 rounded-2xl">
             {categories.map((cat) => {
               const isActive = filter === cat.id;
               return (
@@ -54,8 +74,8 @@ export default function Projects() {
                   onClick={() => setFilter(cat.id as any)}
                   className={`px-5 py-2.5 text-xs sm:text-sm font-semibold rounded-xl transition-all duration-300 relative focus:outline-none cursor-pointer ${
                     isActive
-                      ? 'text-white shadow-sm'
-                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-950 dark:hover:text-slate-200'
+                      ? 'text-white shadow-sm font-bold'
+                      : 'text-slate-600 hover:text-slate-900'
                   }`}
                   id={`project-tab-${cat.id}`}
                 >
@@ -63,7 +83,7 @@ export default function Projects() {
                   {isActive && (
                     <motion.div
                       layoutId="activeProjCategory"
-                      className="absolute inset-0 bg-blue-600 dark:bg-blue-500 rounded-xl"
+                      className="absolute inset-0 bg-blue-600 rounded-xl"
                       transition={{ type: 'spring', stiffness: 350, damping: 28 }}
                     />
                   )}
@@ -88,11 +108,11 @@ export default function Projects() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.35 }}
-                className="sleek-card group flex flex-col rounded-3xl overflow-hidden hover:-translate-y-1.5"
+                className="bg-white border border-slate-200 hover:border-blue-500/30 shadow-sm hover:shadow-md transition-all duration-300 group flex flex-col rounded-3xl overflow-hidden hover:-translate-y-1.5"
                 id={`project-card-${project.id}`}
               >
                 {/* Image Display Frame with Overlay */}
-                <div className="relative aspect-video overflow-hidden bg-slate-200 dark:bg-slate-950">
+                <div className="relative aspect-video overflow-hidden bg-slate-50 border-b border-slate-200">
                   <img
                     src={project.image}
                     alt={project.title}
@@ -102,7 +122,7 @@ export default function Projects() {
                   />
                   
                   {/* Hover interactive glass button shelf overlay */}
-                  <div className="absolute inset-0 bg-slate-900/70 backdrop-blur-[3px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4 z-20">
+                  <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-[3px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4 z-20">
                     <a
                       href={project.githubUrl}
                       target="_blank"
@@ -116,22 +136,34 @@ export default function Projects() {
                     </a>
                     
                     {project.liveUrl !== '#' && (
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-3 rounded-full bg-blue-600 hover:bg-blue-500 text-white hover:scale-110 active:scale-95 transition-all text-xs flex items-center space-x-2 shadow-lg shadow-blue-500/35"
-                        title="View Live Deploy"
-                        id={`proj-live-${project.id}`}
-                      >
-                        <ExternalLink className="w-5 h-5" />
-                        <span className="font-mono text-[10px] tracking-wider font-bold">LIVE</span>
-                      </a>
+                      project.liveUrl === '#fastmovie' ? (
+                        <button
+                          onClick={() => setSelectedProject('fastmovie')}
+                          className="p-3 rounded-full bg-blue-600 hover:bg-blue-500 text-white hover:scale-110 active:scale-95 transition-all text-xs flex items-center space-x-2 shadow-lg shadow-blue-550/35 cursor-pointer font-bold"
+                          title="Interactive Home Design View"
+                          id={`proj-live-${project.id}`}
+                        >
+                          <ExternalLink className="w-5 h-5" />
+                          <span className="font-mono text-[10px] tracking-wider font-bold">LIVE DESIGN</span>
+                        </button>
+                      ) : (
+                        <a
+                          href={project.liveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-3 rounded-full bg-blue-600 hover:bg-blue-500 text-white hover:scale-110 active:scale-95 transition-all text-xs flex items-center space-x-2 shadow-lg shadow-blue-500/35"
+                          title="View Live Deploy"
+                          id={`proj-live-${project.id}`}
+                        >
+                          <ExternalLink className="w-5 h-5" />
+                          <span className="font-mono text-[10px] tracking-wider font-bold">LIVE</span>
+                        </a>
+                      )
                     )}
                   </div>
 
                   {/* Top-right category Pill */}
-                  <span className="absolute top-4 right-4 z-10 font-mono text-[10px] uppercase font-bold tracking-wider text-white bg-slate-950/80 backdrop-blur border border-white/10 px-3 py-1.5 rounded-full shadow-md">
+                  <span className="absolute top-4 right-4 z-10 font-mono text-[10px] uppercase font-bold tracking-wider text-blue-600 bg-blue-50 border border-blue-200 px-3 py-1.5 rounded-full shadow-sm">
                     {project.category === 'fullstack' ? 'Full Stack' : 'Frontend'}
                   </span>
                 </div>
@@ -139,12 +171,12 @@ export default function Projects() {
                 {/* Info Text block */}
                 <div className="p-6 flex flex-col flex-1" id={`project-content-${project.id}`}>
                   {/* Title */}
-                  <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors mb-2.5 font-sans leading-snug">
+                  <h3 className="text-lg font-bold text-slate-800 group-hover:text-blue-600 transition-colors mb-2.5 font-sans leading-snug">
                     {project.title}
                   </h3>
 
                   {/* Description */}
-                  <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed mb-6 flex-1">
+                  <p className="text-sm text-slate-650 leading-relaxed mb-6 flex-1">
                     {project.description}
                   </p>
 
@@ -153,35 +185,45 @@ export default function Projects() {
                     {project.tech.map((t) => (
                       <span
                         key={t}
-                        className="font-mono text-[10px] font-semibold text-slate-500 dark:text-slate-300 bg-slate-100 dark:bg-slate-800/60 border border-slate-205 dark:border-slate-800/10 px-2.5 py-1 rounded-md"
+                        className="font-mono text-[10px] font-semibold text-slate-605 bg-slate-50 border border-slate-201 px-2.5 py-1 rounded-md"
                       >
                         {t}
                       </span>
                     ))}
                   </div>
 
-                  {/* Readability link list for mobile displays (mobile tap targets) */}
-                  <div className="flex items-center justify-between pt-4 border-t border-slate-150 dark:border-slate-800/50 sm:hidden">
+                  {/* Readability link list for mobile displays */}
+                  <div className="flex items-center justify-between pt-4 border-t border-slate-200 sm:hidden">
                     <a
                       href={project.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center space-x-1 text-xs font-mono font-bold text-slate-600 dark:text-slate-300"
+                      className="inline-flex items-center space-x-1 text-xs font-mono font-bold text-slate-600"
                     >
                       <Github className="w-3.5 h-3.5" />
                       <span>Code Repo</span>
                     </a>
                     
                     {project.liveUrl !== '#' && (
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center space-x-1 text-xs font-mono font-bold text-blue-600 dark:text-blue-400"
-                      >
-                        <ExternalLink className="w-3.5 h-3.5" />
-                        <span>Live Demo</span>
-                      </a>
+                      project.liveUrl === '#fastmovie' ? (
+                        <button
+                          onClick={() => setSelectedProject('fastmovie')}
+                          className="inline-flex items-center space-x-1 text-xs font-mono font-bold text-blue-600 cursor-pointer"
+                        >
+                          <ExternalLink className="w-3.5 h-3.5" />
+                          <span>Live Design</span>
+                        </button>
+                      ) : (
+                        <a
+                          href={project.liveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center space-x-1 text-xs font-mono font-bold text-blue-600"
+                        >
+                          <ExternalLink className="w-3.5 h-3.5" />
+                          <span>Live Demo</span>
+                        </a>
+                      )
                     )}
                   </div>
                   
@@ -191,6 +233,341 @@ export default function Projects() {
           </AnimatePresence>
         </motion.div>
       </div>
+
+      {/* Exquisite FastMovie High-Fidelity Interactive Modal Setup */}
+      <AnimatePresence>
+        {selectedProject === 'fastmovie' && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-white/95 backdrop-blur-md overflow-y-auto overflow-x-hidden flex flex-col justify-start items-center py-6 px-4 sm:px-6"
+            id="fastmovie-fullscreen-overlay"
+          >
+            {/* Modal Exit Header Anchor */}
+            <div className="max-w-7xl w-full flex justify-between items-center mb-6 z-30 relative py-2">
+              <div className="flex items-center space-x-2 text-xs font-mono tracking-widest text-blue-600">
+                <Sparkles className="w-4 h-4 text-blue-600" />
+                <span>FASTMOVIE INTERACTIVE WORKSPACE</span>
+              </div>
+              <button
+                onClick={() => setSelectedProject(null)}
+                className="p-2 sm:p-2.5 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-slate-900 active:scale-95 transition-all font-sans text-xs flex items-center space-x-1 px-4 cursor-pointer"
+                id="close-fastmovie-modal"
+              >
+                <X className="w-4 h-4" />
+                <span className="font-bold">Exit Workspace</span>
+              </button>
+            </div>
+
+            {/* Simulated Live Viewport matching user's screenshot layout */}
+            <div 
+              className="max-w-7xl w-full rounded-3xl bg-white text-slate-900 border border-slate-200 shadow-[0_30px_90px_rgba(0,0,0,0.12)] relative overflow-hidden flex flex-col pt-4 pb-12 px-4 sm:px-8 text-left"
+              id="simulated-fastmovie-viewport"
+            >
+              {/* Outer Neon Glow Layer */}
+              <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-blue-500/20 to-transparent" />
+
+              {/* SECTION: 1. Capsule Header */}
+              <div 
+                className="w-full rounded-2xl border border-blue-100 bg-slate-50 px-4 sm:px-6 py-3.5 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 z-40 relative shadow-[0_0_20px_rgba(37,99,235,0.04)] mb-10"
+                id="capsule-hdr"
+              >
+                {/* Logo with Blue Circle */}
+                <div className="flex items-center space-x-2.5">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-blue-600 text-white font-extrabold flex items-center justify-center font-sans shadow-[0_0_15px_rgba(37,99,235,0.25)] text-lg">
+                    F
+                  </div>
+                  <span className="font-black text-xl tracking-wider text-slate-900 font-sans sm:text-2xl">
+                    FASTMOVIE
+                  </span>
+                </div>
+
+                {/* Simulated Navigation items with active Pill */}
+                <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-3" id="fastmovie-tabs">
+                  {['HOME', 'MOVIES', 'SERIES', 'TRENDING', 'CONTACT'].map((btn) => {
+                    const isTabActive = activeCategory === btn;
+                    return (
+                      <button
+                        key={btn}
+                        onClick={() => setActiveCategory(btn)}
+                        className={`text-[11px] sm:text-xs font-black tracking-widest px-4 py-2.5 rounded-full transition-all cursor-pointer ${
+                          isTabActive
+                            ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.3)] font-extrabold scale-105'
+                            : 'text-slate-600 hover:text-blue-600'
+                        }`}
+                      >
+                        {btn}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Right Area: Search input + Link + grid */}
+                <div className="flex flex-wrap items-center justify-center md:justify-end gap-3 sm:gap-4 font-sans">
+                  <span className="text-[11px] font-black tracking-widest text-blue-600 hover:underline cursor-pointer hidden sm:inline">
+                    FASTMOVIE.COM
+                  </span>
+
+                  {/* Search bar widget */}
+                  <div className="relative" id="fastmovie-search-wrap">
+                    <input
+                      type="text"
+                      placeholder="Search movie"
+                      value={fastMovieSearch}
+                      onChange={(e) => setFastMovieSearch(e.target.value)}
+                      className="bg-white border border-slate-200 rounded-xl pl-3 px-8 py-2 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 w-36 sm:w-44 transition-all"
+                    />
+                    <Search className="w-3.5 h-3.5 text-slate-405 absolute left-3 top-2.5" />
+                    {fastMovieSearch && (
+                      <button 
+                        onClick={() => setFastMovieSearch('')}
+                        className="text-slate-500 absolute right-2 top-2.5 text-[9px] font-mono hover:text-slate-800 border bg-white px-1 rounded hover:bg-slate-50"
+                      >
+                        CLR
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Icon grid menu */}
+                  <div className="p-2 bg-blue-600 text-white rounded-lg cursor-pointer hover:bg-blue-500 transition-all shadow-[0_0_10px_rgba(37,99,235,0.2)]">
+                    <Grid className="w-4 h-4" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Category-Specific dynamic text if searched */}
+              {fastMovieSearch && (
+                <div className="mb-6 p-3 bg-blue-50/80 border border-blue-200 text-xs text-blue-650 rounded-xl flex items-center justify-between">
+                  <span>Filtered FastMovie catalog for keyword: "{fastMovieSearch}"</span>
+                  <button onClick={() => setFastMovieSearch('')} className="underline text-slate-700 hover:text-blue-600 font-bold">Show All</button>
+                </div>
+              )}
+
+              {/* SECTION: 2. Core Inner Hero Design */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center mb-16 relative" id="fastmovie-hero-body">
+                {/* Space backdrop decor lights */}
+                <div className="absolute top-1/2 left-0 -translate-y-1/2 w-72 h-72 rounded-full bg-blue-600/5 blur-[100px] pointer-events-none" />
+
+                {/* Main description Left Column (7 cols) */}
+                <div className="lg:col-span-7 flex flex-col space-y-6 relative z-10" id="fastmovie-hero-text">
+                  
+                  {/* Tagline */}
+                  <div className="flex items-center space-x-2 text-xs font-black tracking-widest text-blue-600 uppercase">
+                    <span className="text-lg font-black leading-none">|</span>
+                    <span>LIMITLESS ENTERTAINMENT</span>
+                  </div>
+
+                  {/* Gigantic Title - Matches screenshot styled elements */}
+                  <div className="space-y-1 sm:space-y-2">
+                    <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-black font-sans leading-none text-slate-900 block">
+                      UNLIMITED <span className="text-blue-600 drop-shadow-[0_0_20px_rgba(37,99,235,0.15)]">MOVIES</span>
+                    </h1>
+                    
+                    {/* Highlighter secondary phrase ANYTIME, ANYWHERE */}
+                    <div className="inline-block relative">
+                      <h3 className="text-xl sm:text-2xl md:text-3xl font-black font-sans tracking-wide text-slate-805 uppercase flex items-center space-x-1">
+                        <span>ANYTIME, ANYWHERE</span>
+                      </h3>
+                      <div className="h-1 bg-gradient-to-r from-blue-500 to-transparent rounded w-full mt-1.5 shadow-[0_2px_10px_rgba(37,99,235,0.2)]" />
+                    </div>
+                  </div>
+
+                  {/* Paragraph bio */}
+                  <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-xl">
+                    Stream the latest blockbusters, cult classics, and exclusive series. Dive into a world of cinematic stories — all in one place.
+                  </p>
+
+                  {/* Dual pill button rows */}
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
+                    <button 
+                      onClick={() => alert('Streaming of "Slaxx (2026)" is initializing securely. Enjoy high-fidelity playback!')}
+                      className="px-8 py-3.5 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-bold text-xs uppercase tracking-widest rounded-full transition-all flex items-center justify-center space-x-2 shadow-[0_5px_20px_rgba(37,99,235,0.25)] cursor-pointer"
+                    >
+                      <Play className="w-4 h-4 fill-white text-white" />
+                      <span>Explore Now</span>
+                    </button>
+
+                    <button 
+                      onClick={() => alert('FastMovie exclusive trailer initializing... (Cinematic Audio System Booting)')}
+                      className="px-8 py-3.5 bg-transparent hover:bg-slate-50 active:scale-95 text-slate-800 border-2 border-blue-600 font-bold text-xs uppercase tracking-widest rounded-full transition-all flex items-center justify-center space-x-2 cursor-pointer"
+                    >
+                      <Film className="w-4 h-4 text-blue-600" />
+                      <span>Watch Trailer</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Right Column: Cascading Poster Stack (5 cols) */}
+                <div className="lg:col-span-5 flex justify-center items-center relative py-6" id="poster-layout-stack">
+                  {/* Dynamic Stack representation from snapshot */}
+                  <div className="relative w-72 h-96 sm:w-80 sm:h-[420px]" id="poster-stack-container">
+                    
+                    {/* Background Poster 2: Rocky Series IMAX (shifted, tilted right) */}
+                    <div className="absolute top-4 left-10 w-48 h-72 sm:w-56 sm:h-80 rounded-2xl bg-white border border-slate-200 overflow-hidden shadow-2xl rotate-6 transform opacity-40 hover:opacity-100 transition-opacity duration-300 pointer-events-none sm:pointer-events-auto">
+                      <div className="absolute top-3 left-3 bg-blue-600 text-white font-mono font-black text-[8px] px-2 py-0.5 rounded uppercase">
+                        IMAX Series
+                      </div>
+                      <img 
+                        src="https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=400&auto=format&fit=crop&q=80" 
+                        alt="Rocky poster" 
+                        referrerPolicy="no-referrer"
+                        className="w-full h-full object-cover" 
+                      />
+                      <div className="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-slate-900/80 to-transparent">
+                        <div className="text-[10px] font-mono text-white">ROCKY EXPERIENCE</div>
+                      </div>
+                    </div>
+
+                    {/* Background Poster 3: Limitless Loop (shifted left, tilted left) */}
+                    <div className="absolute top-8 -left-6 w-48 h-72 sm:w-56 sm:h-80 rounded-2xl bg-white border border-slate-200 overflow-hidden shadow-2xl -rotate-12 transform opacity-30 hover:opacity-100 transition-opacity duration-300 pointer-events-none sm:pointer-events-auto">
+                      <div className="absolute top-3 right-3 bg-white border border-blue-600 text-blue-600 font-mono text-[8px] px-2 py-0.5 rounded uppercase">
+                        PREMIUM
+                      </div>
+                      <img 
+                        src="https://images.unsplash.com/photo-1542204172-e7052809f852?w=400&auto=format&fit=crop&q=80" 
+                        alt="Poster 3" 
+                        referrerPolicy="no-referrer"
+                        className="w-full h-full object-cover" 
+                      />
+                    </div>
+
+                    {/* Foregrounds Main Poster Card: Slaxx (Centered, scaled up!) */}
+                    <motion.div 
+                      whileHover={{ scale: 1.05 }}
+                      className="absolute top-12 left-6 w-52 h-[340px] sm:w-[230px] sm:h-[370px] rounded-3xl bg-white border-2 border-blue-600 overflow-hidden shadow-[0_15px_40px_rgba(37,99,235,0.2)] z-30"
+                      id="foreground-slaxx-card"
+                    >
+                      {/* Top stickers from screenshot */}
+                      <div className="absolute top-3 left-3 bg-white text-blue-600 font-mono font-black text-[9px] px-2 py-1 rounded border border-blue-300 uppercase tracking-widest">
+                        Gaheza
+                      </div>
+                                           <div className="absolute top-3 right-3 bg-blue-600 text-white font-mono font-black text-[8px] px-2 py-1 rounded flex items-center space-x-0.5 uppercase tracking-widest shadow-[0_0_10px_rgba(37,99,235,0.3)]">
+                        <Video className="w-2.5 h-2.5" />
+                        <span>Movie</span>
+                      </div>
+
+                      {/* Poster background representation */}
+                      <div className="w-full h-2/3 bg-slate-50 relative">
+                        <img 
+                          src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&auto=format&fit=crop&q=80" 
+                          alt="Slaxx pants" 
+                          referrerPolicy="no-referrer"
+                          className="w-full h-full object-cover brightness-95 contrast-110" 
+                        />
+                        {/* Red stylized title on image - matches the blood SLAXX style */}
+                        <div className="absolute inset-x-0 bottom-4 text-center">
+                          <span 
+                            className="font-extrabold text-3xl font-sans text-red-600 tracking-black select-none uppercase"
+                            style={{ textShadow: '0 0 10px rgba(220,38,38,0.8), 0 0 20px rgba(0,0,0,1)' }}
+                          >
+                            Slaxx
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Information panel */}
+                      <div className="h-1/3 bg-slate-50 p-4 font-sans text-left flex flex-col justify-end space-y-1 border-t border-slate-100">
+                        <h4 className="font-extrabold font-sans text-slate-800 text-base leading-none">
+                          Slaxx
+                        </h4>
+                        <div className="flex items-center space-x-2 text-[10px] text-slate-500 font-mono mt-1">
+                          <span className="flex items-center space-x-0.5 text-blue-600">
+                            <Calendar className="w-3 h-3 text-blue-500" />
+                            <span>2026</span>
+                          </span>
+                          <span>•</span>
+                          <span className="text-blue-600 font-bold">Horror</span>
+                        </div>
+                      </div>
+                    </motion.div>
+                  </div>
+                </div>
+              </div>
+
+              {/* SECTION: 3. Recently Added footer with carousel arrows */}
+              <div className="mt-6 border-t border-slate-200 pt-10" id="fastmovie-bottom-section">
+                
+                {/* Header label and Arrows */}
+                <div className="flex items-center justify-between mb-8">
+                  <div className="flex items-center space-x-2.5 text-xs sm:text-sm font-black text-slate-900 uppercase font-sans">
+                    <span className="text-lg font-black text-blue-600">|</span>
+                    <Tv className="w-5 h-5 text-blue-600" />
+                    <span>Recently Added</span>
+                  </div>
+
+                  {/* Circle outline arrow indicators */}
+                  <div className="flex items-center space-x-2.5">
+                    <button 
+                      onClick={() => setCarouselOffset(prev => Math.max(prev - 220, 0))}
+                      className="p-2 sm:p-2.5 rounded-full border border-blue-500/50 text-blue-600 hover:bg-blue-600 hover:text-white hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                    >
+                      <ChevronLeft className="w-4 h-4" />
+                    </button>
+                    <button 
+                      onClick={() => setCarouselOffset(prev => prev + 220)}
+                      className="p-2 sm:p-2.5 rounded-full border border-blue-500/50 text-blue-600 hover:bg-blue-600 hover:text-white hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                    >
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Horizontal slider list */}
+                <div className="overflow-hidden relative" id="carousel-frame">
+                  <motion.div 
+                    animate={{ x: -carouselOffset }}
+                    transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+                    className="flex space-x-5"
+                  >
+                    {filteredFastMovies.length > 0 ? (
+                      filteredFastMovies.map((movie, index) => (
+                        <div 
+                          key={index}
+                          className="w-48 sm:w-56 bg-white border border-slate-200 rounded-2xl overflow-hidden shrink-0 group hover:border-blue-600 transition-all cursor-pointer shadow-sm text-left"
+                          onClick={() => alert(`Streaming initialized for "${movie.title}"`)}
+                        >
+                          <div className="h-32 bg-slate-50 relative overflow-hidden">
+                            <img 
+                              src={movie.image} 
+                              alt={movie.title} 
+                              referrerPolicy="no-referrer"
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                            />
+                            {/* Sticker Pill */}
+                            <span className="absolute top-2.5 left-2.5 bg-white text-blue-600 font-mono text-[7px] font-bold px-1.5 py-0.5 border border-blue-200 rounded uppercase">
+                              {movie.tag}
+                            </span>
+                          </div>
+                          <div className="p-3 bg-white font-sans border-t border-slate-100">
+                            <h5 className="font-extrabold text-xs text-slate-800 truncate">{movie.title}</h5>
+                            <div className="flex justify-between items-center text-[9px] font-mono text-slate-500 mt-1.5">
+                              <span>{movie.year}</span>
+                              <span className="text-blue-600 font-bold">{movie.genre}</span>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="p-10 text-center w-full text-xs text-slate-550">
+                        No movie matching search criteria is available in FastMovie cache.
+                      </div>
+                    )}
+                  </motion.div>
+                </div>
+
+                {/* Tiny Blue Bottom highlight - LATEST UPDATES banner line */}
+                <div className="mt-12 text-center border-t border-blue-500/20 pt-5">
+                  <span className="text-[10px] font-black tracking-widest text-blue-600 uppercase hover:underline cursor-pointer">
+                    LATEST UPDATES
+                  </span>
+                  <div className="w-12 h-0.5 bg-blue-600 mx-auto mt-2" />
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

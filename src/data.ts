@@ -1,14 +1,22 @@
 import { Project, Skill, TimelineEvent } from './types';
 
 export const personalInfo = {
-  fullName: 'Remy William',
-  title: 'Software Developer • ICT Enthusiast • Full Stack Learner',
-  shortBio: 'Final-year Level 5 Software Development student from Rwanda 🇷🇼, passionate about engineering scalable modern web applications, polished UI/UX, and robust API architectures.',
-  longBio: 'I am an aspiring Full-Stack Software Engineer with a strong foundation in Information and Communication Technology. As a final-year student pursuing a Level 5 Diploma in Software Development in Rwanda, I pair academic rigor with practical, hands-on development. My journey is fueled by a relentless curiosity for how technology works, driving me to build highly interactive layouts and highly optimized backends. My ultimate objective is to architect clean systems that solve localized and global problems while collaborating with industry-leading teams.',
+  fullName: 'Bizimana Ngabo Remy William',
+  title: 'Software Developer • ICT Specialist • Tech Visionary',
+  birthYear: 2009,
+  shortBio: 'Born in 2009 • Final-year Level 5 Software Development student and tech prodigy from Rwanda 🇷🇼, building highly immersive web systems, responsive cinematic platforms, and secure APIs.',
+  longBio: 'I am Bizimana Ngabo Remy William, an ambitious, forward-thinking Software Developer born in 2009. Currently finalizing my Level 5 Software Development certification in Rwanda, I pair deep programming principles with advanced application UI/UX designs. My ultimate vision is to create high-impact software systems that streamline commerce, entertainment, and digital security within East Africa and globally.',
   avatarUrl: '', // Will resolve to the generated image in the component
+  family: {
+    mom: 'Mukabyiringiro Anee',
+    dad: 'Bizimana Felix',
+    brother: 'Kwizera Edison',
+    self: 'Bizimana Ngabo Remy William',
+  },
   contact: {
     email: 'remywilliamb@gmail.com',
-    whatsapp: 'https://wa.me/250780000000', // standard format for Rwandan phone contact
+    phone: '078657980',
+    whatsapp: 'https://wa.me/25078657980', // standard format for Rwandan phone contact
     linkedin: 'https://linkedin.com/in/remy-william',
     github: 'https://github.com/remy-william',
     location: 'Kigali, Rwanda'
@@ -38,14 +46,14 @@ export const skillsData: Skill[] = [
 
 export const projectsData: Project[] = [
   {
-    id: 'netflix-clone',
-    title: 'Netflix Clone',
-    description: 'An immersive replica of Netflix UI with an active video playback dashboard, smart category navigation, and dynamically styled carousels.',
+    id: 'fastmovie',
+    title: 'FastMovie Website',
+    description: 'An premium cinematic exploration hub styled with high contrast dark designs, glowing capsule layouts, and interactive real-time movie content hubs.',
     tech: ['React.js', 'Tailwind CSS', 'motion', 'REST APIs'],
-    liveUrl: 'https://remy-netflix-clone.vercel.app',
-    githubUrl: 'https://github.com/remy-william/netflix-clone',
+    liveUrl: '#fastmovie', // Custom click event triggers the exquisite interactive FastMovie demo!
+    githubUrl: 'https://github.com/remy-william/fastmovie-app',
     category: 'frontend',
-    image: 'https://images.unsplash.com/photo-1574375927938-d5a98e8edd86?w=600&auto=format&fit=crop&q=80'
+    image: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=600&auto=format&fit=crop&q=80'
   },
   {
     id: 'movie-series-platform',
