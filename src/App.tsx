@@ -17,7 +17,8 @@ import Footer from './components/Footer';
 export default function App() {
   const [isAdminPage] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
-      return window.location.pathname === '/admin';
+      const path = window.location.pathname.toLowerCase().replace(/\/$/, "");
+      return path === '/admin';
     }
     return false;
   });
