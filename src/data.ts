@@ -6,7 +6,7 @@ export const personalInfo = {
   birthYear: 2009,
   shortBio: 'Born in 2009 • Final-year Level 5 Software Development student and tech prodigy from Rwanda 🇷🇼, building highly immersive web systems, responsive cinematic platforms, and secure APIs.',
   longBio: 'I am Bizimana Ngabo Remy William, an ambitious, forward-thinking Software Developer born in 2009. Currently finalizing my Level 5 Software Development certification in Rwanda, I pair deep programming principles with advanced application UI/UX designs. My ultimate vision is to create high-impact software systems that streamline commerce, entertainment, and digital security within East Africa and globally.',
-  avatarUrl: '', // Will resolve to the generated image in the component
+  avatarUrl: 'https://scontent.cdninstagram.com/v/t51.82787-19/671217869_17876701431578289_2268417454891915997_n.jpg?stp=dst-jpg_s150x150_tt6&_nc_cat=107&ccb=7-5&_nc_sid=f7ccc5&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy40ODAuQzMifQ%3D%3D&_nc_ohc=3zZrMCVBUIIQ7kNvwEdEyeh&_nc_oc=AdqviXTeYsJJCP68qzy5FoHltZGOFfR9dEFh9sfATBJf-_KVgwZB-vbDiv62AHfbNOE&_nc_zt=24&_nc_ht=scontent.cdninstagram.com&_nc_gid=QEwISzGa62ouV4I0PsisLw&_nc_ss=7a6a8&oh=00_Af5IPu9kL6HR8HJuIi08dOqb9Ve3pJqKjx8A7i3uq14GZQ&oe=6A15AEB1', 
   family: {
     mom: 'Mukabyiringiro Anee',
     dad: 'Bizimana Felix',
@@ -18,7 +18,9 @@ export const personalInfo = {
     phone: '078657980',
     whatsapp: 'https://wa.me/25078657980', // standard format for Rwandan phone contact
     linkedin: 'https://linkedin.com/in/remy-william',
-    github: 'https://github.com/remy-william',
+    github: 'https://github.com/remywilliamb-ai',
+    instagram: 'https://www.instagram.com/__remy_250/',
+    facebook: 'https://www.facebook.com/remy.william.61776',
     location: 'Kigali, Rwanda'
   }
 };
@@ -51,7 +53,7 @@ export const projectsData: Project[] = [
     description: 'An premium cinematic exploration hub styled with high contrast dark designs, glowing capsule layouts, and interactive real-time movie content hubs.',
     tech: ['React.js', 'Tailwind CSS', 'motion', 'REST APIs'],
     liveUrl: '#fastmovie', // Custom click event triggers the exquisite interactive FastMovie demo!
-    githubUrl: 'https://github.com/remy-william/fastmovie-app',
+    githubUrl: 'https://github.com/remywilliamb-ai/fastmovie-app',
     category: 'frontend',
     image: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=600&auto=format&fit=crop&q=80'
   },
@@ -61,7 +63,7 @@ export const projectsData: Project[] = [
     description: 'A dynamic database search hub integrating cinematic search queries, detailed cast profiles, user favorited playlists, and IMDB score reviews.',
     tech: ['React.js', 'Tailwind CSS', 'REST APIs', 'Lucide Icons'],
     liveUrl: 'https://remy-cineverse.vercel.app',
-    githubUrl: 'https://github.com/remy-william/movie-series-platform',
+    githubUrl: 'https://github.com/remywilliamb-ai/movie-series-platform',
     category: 'frontend',
     image: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=600&auto=format&fit=crop&q=80'
   },
@@ -71,7 +73,7 @@ export const projectsData: Project[] = [
     description: 'A futuristic glassmorphic command center compiling reactive statistics charts, user tracking tables, theme settings, and active task progress metrics.',
     tech: ['React.js', 'Recharts', 'Tailwind CSS', 'Lucide Icons'],
     liveUrl: 'https://remy-admin-panel.vercel.app',
-    githubUrl: 'https://github.com/remy-william/admin-dashboard',
+    githubUrl: 'https://github.com/remywilliamb-ai/admin-dashboard',
     category: 'frontend',
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&auto=format&fit=crop&q=80'
   },
@@ -81,7 +83,7 @@ export const projectsData: Project[] = [
     description: 'A production-ready secure authentication gateway utilizing JSON Web Tokens, salt hashing, session control, and access levels.',
     tech: ['Node.js', 'Express.js', 'JWT', 'MongoDB', 'React.js'],
     liveUrl: 'https://remy-jwt-auth.vercel.app',
-    githubUrl: 'https://github.com/remy-william/jwt-auth-system',
+    githubUrl: 'https://github.com/remywilliamb-ai/jwt-auth-system',
     category: 'fullstack',
     image: 'https://images.unsplash.com/photo-1509822929063-6b6cfc9b42f2?w=600&auto=format&fit=crop&q=80'
   },
@@ -91,7 +93,7 @@ export const projectsData: Project[] = [
     description: 'This current personal platform built to highlight credentials with sleek glassmorphism, high contrast themes, and optimized layout elements.',
     tech: ['React.js', 'Tailwind CSS', 'motion', 'Lucide Icons'],
     liveUrl: '#',
-    githubUrl: 'https://github.com/remy-william/portfolio-v2',
+    githubUrl: 'https://github.com/remywilliamb-ai/portfolio-v2',
     category: 'frontend',
     image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=600&auto=format&fit=crop&q=80'
   },
@@ -101,7 +103,7 @@ export const projectsData: Project[] = [
     description: 'A comprehensive multi-user management tracker with real-time editing, schema validations, query filtering, and smooth state updates.',
     tech: ['React.js', 'Node.js', 'Express.js', 'MySQL', 'Tailwind CSS'],
     liveUrl: 'https://remy-crud-manager.vercel.app',
-    githubUrl: 'https://github.com/remy-william/fullstack-crud-app',
+    githubUrl: 'https://github.com/remywilliamb-ai/fullstack-crud-app',
     category: 'fullstack',
     image: 'https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=600&auto=format&fit=crop&q=80'
   }

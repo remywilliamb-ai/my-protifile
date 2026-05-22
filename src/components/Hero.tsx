@@ -70,7 +70,7 @@ export default function Hero() {
     }
   };
 
-  const avatarSrc = '/src/assets/images/remy_william_avatar_1779379369567.png';
+  const avatarSrc = personalInfo.avatarUrl || '/src/assets/images/remy_william_avatar_1779379369567.png';
 
   return (
     <section

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, MessageSquare, Send, CheckCircle2, Phone, Linkedin, Github, MapPin, Sparkles } from 'lucide-react';
+import { Mail, MessageSquare, Send, CheckCircle2, Phone, Linkedin, Github, MapPin, Sparkles, Instagram, Facebook } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { personalInfo } from '../data';
 
@@ -123,19 +123,19 @@ export default function Contact() {
 
             {/* Social handles connector card */}
             <div className="bg-slate-50 border border-slate-205/85 rounded-xl p-6 text-left">
-              <h4 className="text-sm font-bold text-slate-800 mb-4">Connect on Social Ecosystems</h4>
+              <h4 className="text-sm font-bold text-slate-800 mb-4 font-sans tracking-tight">Connect on Social Ecosystems</h4>
               
-              <div className="flex flex-col sm:flex-row gap-2.5">
+              <div className="grid grid-cols-2 gap-3">
                 {/* WhatsApp button link */}
                 <a
                   href={personalInfo.contact.whatsapp}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center space-x-2 text-xs font-bold font-mono tracking-wide text-white bg-emerald-600 hover:bg-emerald-500 px-4 py-3 rounded-xl hover:shadow-lg hover:shadow-emerald-500/10 transition-all text-center flex-1"
+                  className="flex items-center justify-center space-x-2 text-xs font-bold font-mono tracking-wide text-white bg-emerald-600 hover:bg-emerald-500 py-3.5 px-4 rounded-xl hover:shadow-lg hover:shadow-emerald-600/10 transition-all text-center outline-none"
                   id="whatsapp-channel"
                 >
-                  <Phone className="w-4 h-4" />
-                  <span>WhatsApp Link</span>
+                  <Phone className="w-4 h-4 shrink-0" />
+                  <span>WhatsApp</span>
                 </a>
 
                 {/* LinkedIn button link */}
@@ -143,11 +143,35 @@ export default function Contact() {
                   href={personalInfo.contact.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center space-x-2 text-xs font-bold font-mono tracking-wide text-white bg-blue-600 hover:bg-blue-700 px-4 py-3 rounded-xl hover:shadow-lg hover:shadow-blue-600/10 transition-all text-center flex-1"
+                  className="flex items-center justify-center space-x-2 text-xs font-bold font-mono tracking-wide text-white bg-[#0A66C2] hover:bg-[#0956a3] py-3.5 px-4 rounded-xl hover:shadow-lg hover:shadow-zinc-800/10 transition-all text-center outline-none"
                   id="linkedin-channel"
                 >
-                  <Linkedin className="w-4 h-4" />
+                  <Linkedin className="w-4 h-4 shrink-0" />
                   <span>LinkedIn</span>
+                </a>
+
+                {/* Instagram button link */}
+                <a
+                  href={personalInfo.contact.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center space-x-2 text-xs font-bold font-mono tracking-wide text-white bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] hover:brightness-105 py-3.5 px-4 rounded-xl hover:shadow-lg hover:shadow-pink-500/10 transition-all text-center outline-none"
+                  id="instagram-channel"
+                >
+                  <Instagram className="w-4 h-4 shrink-0" />
+                  <span>Instagram</span>
+                </a>
+
+                {/* Facebook button link */}
+                <a
+                  href={personalInfo.contact.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center space-x-2 text-xs font-bold font-mono tracking-wide text-white bg-[#1877F2] hover:bg-[#166fe5] py-3.5 px-4 rounded-xl hover:shadow-lg hover:shadow-blue-600/10 transition-all text-center outline-none"
+                  id="facebook-channel"
+                >
+                  <Facebook className="w-4 h-4 shrink-0" />
+                  <span>Facebook</span>
                 </a>
 
                 {/* GitHub button link */}
@@ -155,11 +179,11 @@ export default function Contact() {
                   href={personalInfo.contact.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center space-x-2 text-xs font-bold font-mono tracking-wide text-slate-800 bg-white hover:bg-slate-50 px-4 py-3 rounded-xl transition-all text-center border border-slate-200 flex-1 shadow-sm"
+                  className="flex items-center justify-center space-x-2 text-xs font-bold font-mono tracking-wide text-slate-800 bg-white hover:bg-slate-50 py-3.5 px-4 rounded-xl transition-all text-center border border-slate-205 col-span-2 shadow-sm outline-none"
                   id="github-channel"
                 >
-                  <Github className="w-4 h-4 text-slate-800" />
-                  <span>GitHub</span>
+                  <Github className="w-4 h-4 text-slate-800 shrink-0" />
+                  <span>GitHub Profile</span>
                 </a>
               </div>
             </div>
