@@ -1,8 +1,9 @@
 import { motion } from 'motion/react';
 import { Calendar, Award, Code2, Cpu, CheckCircle2, ChevronRight } from 'lucide-react';
-import { timelineData } from '../data';
+import { usePortfolio } from '../data_context';
 
 export default function Timeline() {
+  const { timelineData } = usePortfolio();
   // Mapping milestones to appropriate status icons
   const iconsList = [Award, Code2, Cpu, CheckCircle2];
 

@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Github, ExternalLink, Library, Compass, Play, Search, Grid, ArrowRight, Video, Tv, Film, Calendar, Clapperboard, X, ChevronLeft, ChevronRight, Sliders, Sparkles, Check } from 'lucide-react';
-import { projectsData } from '../data';
+import { usePortfolio } from '../data_context';
 
 export default function Projects() {
+  const { projectsData } = usePortfolio();
   const [filter, setFilter] = useState<'all' | 'frontend' | 'fullstack'>('all');
   const [selectedProject, setSelectedProject] = useState<string | null>(null);
   

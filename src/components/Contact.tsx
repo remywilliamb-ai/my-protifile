@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Mail, MessageSquare, Send, CheckCircle2, Phone, Linkedin, Github, MapPin, Sparkles, Instagram, Facebook } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { personalInfo } from '../data';
+import { usePortfolio } from '../data_context';
 
 interface InboxMessage {
   id: string;
@@ -12,6 +12,7 @@ interface InboxMessage {
 }
 
 export default function Contact() {
+  const { personalInfo } = usePortfolio();
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [isPending, setIsPending] = useState(false);
   const [transmissionStep, setTransmissionStep] = useState('');
@@ -35,24 +36,50 @@ export default function Contact() {
       setTransmissionStep('Encrypting message payload (AES-256)...');
       setTimeout(() => {
         setTransmissionStep('Broadcasting packets to secure server...');
-        setTimeout(() => {
-          const newMessage: InboxMessage = {
-            id: crypto.randomUUID(),
+        
+        // Dynamic fetch post integration to save message in server storage
+        fetch('/api/messages', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
             name: formData.name,
             email: formData.email,
-            message: formData.message,
-            timestamp: new Date().toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })
-          };
+            message: formData.message
+          })
+        })
+          .then((res) => {
+            if (res.ok) return res.json();
+            throw new Error('API dispatch failed');
+          })
+          .then((data) => {
+            if (data && data.success) {
+              setInbox((prev) => [data.message, ...prev]);
+            }
+            setIsPending(false);
+            setTransmissionStep('');
+            setIsSuccess(true);
+            setFormData({ name: '', email: '', message: '' });
 
-          setInbox((prev) => [newMessage, ...prev]);
-          setIsPending(false);
-          setTransmissionStep('');
-          setIsSuccess(true);
-          setFormData({ name: '', email: '', message: '' });
-
-          // Expire success banner after a few seconds
-          setTimeout(() => setIsSuccess(false), 6000);
-        }, 1050);
+            // Expire success banner after a few seconds
+            setTimeout(() => setIsSuccess(false), 6000);
+          })
+          .catch((err) => {
+            console.error("Failed to commit post message", err);
+            // Fallback to local storage if server fails
+            const localMessage: InboxMessage = {
+              id: crypto.randomUUID(),
+              name: formData.name,
+              email: formData.email,
+              message: formData.message,
+              timestamp: new Date().toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })
+            };
+            setInbox((prev) => [localMessage, ...prev]);
+            setIsPending(false);
+            setTransmissionStep('');
+            setIsSuccess(true);
+            setFormData({ name: '', email: '', message: '' });
+            setTimeout(() => setIsSuccess(false), 6000);
+          });
       }, 1050);
     }, 1050);
   };

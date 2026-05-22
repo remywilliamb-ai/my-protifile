@@ -5,7 +5,7 @@ import BuyMeCoffeeModal from './BuyMeCoffeeModal';
 
 interface NavbarProps {
   isDarkMode: boolean;
-  toggleDarkMode: () => void;
+  toggleDarkMode: (e?: React.MouseEvent) => void;
 }
 
 export default function Navbar({ isDarkMode, toggleDarkMode }: NavbarProps) {
@@ -153,7 +153,7 @@ export default function Navbar({ isDarkMode, toggleDarkMode }: NavbarProps) {
         <div className="flex items-center space-x-3">
           {/* Light/Dark Toggle Button */}
           <button
-            onClick={toggleDarkMode}
+            onClick={(e) => toggleDarkMode(e)}
             className="p-2 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-900 transition-all duration-250 cursor-pointer flex items-center justify-center shadow-sm select-none outline-none focus:outline-none"
             aria-label="Toggle Theme"
             title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}

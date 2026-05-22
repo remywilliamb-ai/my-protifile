@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, MouseEvent } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { personalInfo } from './data';
+import { PortfolioProvider } from './data_context';
+import Admin from './components/Admin';
 
 // Components import
 import Navbar from './components/Navbar';
@@ -13,9 +15,23 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 
 export default function App() {
+  const [isAdminPage] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return window.location.pathname === '/admin';
+    }
+    return false;
+  });
+
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
     const saved = localStorage.getItem('theme');
-    return saved !== null ? saved === 'dark' : true;
+    if (saved !== null) {
+      return saved === 'dark';
+    }
+    // Detect system preference
+    if (typeof window !== 'undefined' && window.matchMedia) {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    return true; // Default fallback
   });
   const [loading, setLoading] = useState(true);
 
@@ -27,17 +43,87 @@ export default function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Dark mode class implementation
+  // Listen for system/OS preference changes
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return;
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleSystemThemeChange = (e: MediaQueryListEvent) => {
+      // Only apply system change if the user has no manually saved theme lock
+      const saved = localStorage.getItem('theme');
+      if (saved === null) {
+        setIsDarkMode(e.matches);
+      }
+    };
+
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener('change', handleSystemThemeChange);
+    } else {
+      mediaQuery.addListener(handleSystemThemeChange);
+    }
+
+    return () => {
+      if (mediaQuery.removeEventListener) {
+        mediaQuery.removeEventListener('change', handleSystemThemeChange);
+      } else {
+        mediaQuery.removeListener(handleSystemThemeChange);
+      }
+    };
+  }, []);
+
+  const [ripples, setRipples] = useState<{ id: number; x: number; y: number; isDark: boolean }[]>([]);
+
+  // Listen for custom theme toggle click event and trigger ripples
+  useEffect(() => {
+    const handleToggleEvent = (e: Event) => {
+      const customEvent = e as CustomEvent<{ x: number; y: number }>;
+      const { x, y } = customEvent.detail || { x: typeof window !== 'undefined' ? window.innerWidth - 65 : 0, y: 40 };
+
+      const newRipple = {
+        id: Date.now() + Math.random(),
+        x,
+        y,
+        isDark: !isDarkMode
+      };
+
+      setRipples((prev) => [...prev, newRipple]);
+
+      // Remove after animation completes
+      setTimeout(() => {
+        setRipples((prev) => prev.filter((r) => r.id !== newRipple.id));
+      }, 1100);
+    };
+
+    window.addEventListener('theme-toggle-clicked', handleToggleEvent);
+    return () => window.removeEventListener('theme-toggle-clicked', handleToggleEvent);
+  }, [isDarkMode]);
+
+  // Dark mode class implementation & system bar / theme-color adjustments
   useEffect(() => {
     const root = document.documentElement;
+    const metaThemeColor = document.getElementById('meta-theme-color');
     if (isDarkMode) {
       root.classList.add('dark');
+      if (metaThemeColor) {
+        metaThemeColor.setAttribute('content', '#04081c'); // rich Blue Force dark background color
+      }
     } else {
       root.classList.remove('dark');
+      if (metaThemeColor) {
+        metaThemeColor.setAttribute('content', '#ffffff'); // clean light mode white background
+      }
     }
   }, [isDarkMode]);
 
-  const toggleDarkMode = () => {
+  const toggleDarkMode = (e?: MouseEvent) => {
+    if (typeof window !== 'undefined') {
+      const clickX = e ? e.clientX : window.innerWidth - 65;
+      const clickY = e ? e.clientY : 40;
+      window.dispatchEvent(new CustomEvent('theme-toggle-clicked', {
+        detail: { x: clickX, y: clickY }
+      }));
+    }
+
     setIsDarkMode((prev) => {
       const newVal = !prev;
       localStorage.setItem('theme', newVal ? 'dark' : 'light');
@@ -45,8 +131,59 @@ export default function App() {
     });
   };
 
+  if (isAdminPage) {
+    return (
+      <PortfolioProvider>
+        <div className={isDarkMode ? 'dark' : ''}>
+          <Admin />
+        </div>
+      </PortfolioProvider>
+    );
+  }
+
   return (
-    <div className="min-h-screen transition-colors duration-300 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100" id="app-root-wrapper">
+    <PortfolioProvider>
+      <div className="min-h-screen transition-colors duration-1000 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 relative overflow-x-hidden" id="app-root-wrapper">
+      {/* Fullscreen Blue-Force theme-toggle expanding ripples */}
+      <AnimatePresence>
+        {ripples.map((ripple) => (
+          <motion.div
+            key={ripple.id}
+            initial={{ 
+              position: 'fixed',
+              left: ripple.x,
+              top: ripple.y,
+              x: '-50%',
+              y: '-50%',
+              width: 14,
+              height: 14,
+              borderRadius: '50%',
+              scale: 0,
+              opacity: 0.85,
+              zIndex: 9999,
+              pointerEvents: 'none'
+            }}
+            animate={{ 
+              scale: Math.max(
+                typeof window !== 'undefined' ? window.innerWidth : 1200, 
+                typeof window !== 'undefined' ? window.innerHeight : 1200
+              ) * 0.25,
+              opacity: 0
+            }}
+            exit={{ opacity: 0 }}
+            transition={{ 
+              duration: 1.05, 
+              ease: [0.1, 0.85, 0.15, 1] // Ultra elegant fluid power push easing
+            }}
+            className={`pointer-events-none mix-blend-screen dark:mix-blend-normal ${
+              ripple.isDark 
+                ? 'bg-[radial-gradient(circle,rgba(59,130,246,0.95)_0%,rgba(37,99,235,0.7)_40%,rgba(29,78,216,0)_100%)] shadow-[0_0_100px_rgba(59,130,246,0.5)]' 
+                : 'bg-[radial-gradient(circle,rgba(251,191,36,0.9)_0%,rgba(245,158,11,0.55)_45%,rgba(251,191,36,0)_100%)] shadow-[0_0_100px_rgba(245,158,11,0.5)]'
+            }`}
+          />
+        ))}
+      </AnimatePresence>
+
       <AnimatePresence>
         {loading ? (
           /* Elegant Minimal RE Logo Loader Screen with theme-aware background */
@@ -179,5 +316,6 @@ export default function App() {
         )}
       </AnimatePresence>
     </div>
+   </PortfolioProvider>
   );
 }

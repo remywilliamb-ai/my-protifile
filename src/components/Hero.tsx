@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight, Mail, Terminal, Database, Code, Cpu, Server, Globe } from 'lucide-react';
-import { personalInfo } from '../data';
+import { usePortfolio } from '../data_context';
 
 // Helper component for floating icons with random positions and gentle oscillations
 function FloatingIcon({ children, className, delay, duration }: { children: React.ReactNode; className: string; delay: number; duration: number }) {
@@ -23,6 +23,7 @@ function FloatingIcon({ children, className, delay, duration }: { children: Reac
 }
 
 export default function Hero() {
+  const { personalInfo } = usePortfolio();
   const [text, setText] = useState('');
   const [roleIndex, setRoleIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);

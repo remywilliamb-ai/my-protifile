@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Code, Terminal, Database, Shield, Radio, Sparkles } from 'lucide-react';
-import { skillsData } from '../data';
+import { usePortfolio } from '../data_context';
 import { Skill } from '../types';
 
 // Robust inline SVG icons representing every requested technology to preserve premium quality and visual fidelity
@@ -84,6 +84,7 @@ function TechLogo({ name }: { name: string }) {
 }
 
 export default function Skills() {
+  const { skillsData } = usePortfolio();
   const [filter, setFilter] = useState<'all' | 'frontend' | 'backend' | 'database' | 'other'>('all');
 
   const tabs = [

@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { LayoutGrid, Cpu, BookOpen, Globe, Coffee, Heart, Users, Sparkles, Phone, Copy, Check } from 'lucide-react';
-import { personalInfo } from '../data';
+import { usePortfolio } from '../data_context';
 
 export default function About() {
+  const { personalInfo } = usePortfolio();
   const [showCoffeeDetails, setShowCoffeeDetails] = useState(false);
   const [copied, setCopied] = useState(false);
 

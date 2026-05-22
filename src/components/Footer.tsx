@@ -1,8 +1,9 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { personalInfo } from '../data';
+import { usePortfolio } from '../data_context';
 
 export default function Footer() {
+  const { personalInfo } = usePortfolio();
   const currentYear = new Date().getFullYear();
 
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
