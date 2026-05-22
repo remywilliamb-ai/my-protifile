@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { personalInfo } from './data';
 
 // Components import
 import Navbar from './components/Navbar';
@@ -41,25 +42,87 @@ export default function App() {
             className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-white text-slate-900 select-none"
             id="app-preloader"
           >
-            {/* Subtle soft visual glow background decoration */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-amber-50 blur-[100px] pointer-events-none" />
+            {/* Subtle soft visual gradient glow background decoration */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] rounded-full bg-gradient-to-tr from-amber-200/40 via-orange-100/25 to-transparent blur-[140px] pointer-events-none" />
 
-            {/* Glowing RE lettermark badge with spinning outer orbit */}
-            <div className="relative flex items-center justify-center" id="loading-re-logo">
-              {/* Smooth spinning circular loading track */}
-              <div className="absolute w-20 h-20 rounded-full border-2 border-slate-100" />
-              <div className="absolute w-20 h-20 rounded-full border-t-2 border-r-2 border-amber-500 animate-spin" style={{ animationDuration: '0.9s' }} />
+            {/* Main Interactive Loader Brand Hub */}
+            <div className="relative flex flex-col items-center" id="loading-re-container">
+              
+              {/* Spinning Graphics Wrapper */}
+              <div className="relative flex items-center justify-center w-36 h-36 mb-8" id="loading-re-logo">
+                {/* 1. Futuristic Outer Ring with Tech Dash Lines */}
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ repeat: Infinity, duration: 15, ease: "linear" }}
+                  className="absolute inset-x-0 inset-y-0 rounded-full border-2 border-dashed border-amber-500/30"
+                />
 
-              {/* Pulsing inner solid black emblem containing 'RE' lettermark */}
-              <motion.div
-                animate={{ scale: [0.96, 1.04, 0.96] }}
-                transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
-                className="w-16 h-16 bg-slate-900 rounded-full flex items-center justify-center shadow-lg relative z-10 border border-slate-800"
-              >
-                <span className="text-xl font-extrabold font-sans tracking-tight text-white select-none">
-                  RE
-                </span>
-              </motion.div>
+                {/* 2. Middle Orbit (Counter-Clockwise elegance, fast-spinning dual gold segments) */}
+                <motion.div
+                  animate={{ rotate: -360 }}
+                  transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
+                  className="absolute w-[124px] h-[124px] rounded-full border-2 border-transparent border-t-amber-500 border-b-amber-500"
+                />
+
+                {/* 3. Outer Ring Frame Glow aura */}
+                <div className="absolute w-28 h-28 rounded-full bg-amber-400/10 blur-xl animate-pulse" />
+
+                {/* 4. Elegant custom golden-glowing solid circular emblem for "RE" */}
+                <motion.div
+                  animate={{ 
+                    scale: [0.97, 1.03, 0.97],
+                    boxShadow: [
+                      "0 10px 30px -10px rgba(245, 158, 11, 0.3)",
+                      "0 20px 40px -5px rgba(245, 158, 11, 0.45)",
+                      "0 10px 30px -10px rgba(245, 158, 11, 0.3)"
+                    ]
+                  }}
+                  transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                  className="w-[90px] h-[90px] bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 rounded-full flex flex-col items-center justify-center shadow-2xl relative z-10 border-2 border-amber-500"
+                >
+                  <div className="absolute inset-0.5 rounded-full border border-amber-400/20 bg-slate-900/60" />
+                  
+                  {/* Highly polished 'RE' emblem letters */}
+                  <span className="text-3xl font-black font-sans tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-amber-300 via-amber-400 to-amber-600 relative z-10 select-none">
+                    RE
+                  </span>
+
+                  {/* Micro luxury horizontal line support */}
+                  <div className="w-6 h-[1.5px] bg-gradient-to-r from-transparent via-amber-400 to-transparent relative z-10 mt-0.5 opacity-60" />
+                </motion.div>
+                
+                {/* 5. Delicate gold loading orb satellite orbiting the logo */}
+                <motion.div 
+                  animate={{ rotate: 360 }}
+                  transition={{ repeat: Infinity, duration: 2.5, ease: "linear" }}
+                  className="absolute w-[124px] h-[124px]"
+                >
+                  <div className="w-3.5 h-3.5 bg-gradient-to-tr from-amber-400 to-amber-600 rounded-full border-2 border-white absolute -top-1.5 left-1/2 -translate-x-1/2 shadow-lg shadow-amber-500/40" />
+                </motion.div>
+              </div>
+
+              {/* Sophisticated Logo details & Status Loader Text labels */}
+              <div className="text-center space-y-2">
+                <motion.h2 
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.1, duration: 0.4 }}
+                  className="text-sm font-black font-sans tracking-[0.3em] text-slate-900 uppercase bg-clip-text"
+                >
+                  REMY WILLIAM
+                </motion.h2>
+
+                <motion.p 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.2, duration: 0.4 }}
+                  className="text-[9px] font-mono tracking-[0.18em] text-amber-600 uppercase font-black flex items-center justify-center gap-2"
+                >
+                  <span>STUDIO</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping inline-block" />
+                  <span>PRELOADER</span>
+                </motion.p>
+              </div>
             </div>
           </motion.div>
         ) : (
