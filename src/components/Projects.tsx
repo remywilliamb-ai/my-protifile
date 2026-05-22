@@ -40,7 +40,7 @@ export default function Projects() {
   return (
     <section
       id="projects"
-      className="relative py-24 bg-white overflow-hidden"
+      className="relative py-24 bg-white dark:bg-slate-950 overflow-hidden"
     >
       {/* Decorative vector meshes */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -54,10 +54,10 @@ export default function Projects() {
           <span className="font-mono text-xs text-blue-600 font-bold uppercase tracking-widest bg-blue-500/10 px-3.5 py-1.5 rounded-full border border-blue-500/20">
             Featured Portfolio
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold font-sans tracking-tight text-slate-900 mb-2">
+          <h2 className="text-3xl sm:text-4xl font-bold font-sans tracking-tight text-slate-900 dark:text-slate-100 mb-2">
             Practical Software Architectures
           </h2>
-          <p className="text-slate-600 max-w-xl text-center text-sm leading-relaxed">
+          <p className="text-slate-600 dark:text-slate-350 max-w-xl text-center text-sm leading-relaxed">
             A comprehensive catalog of applications focused on tokenized routes, clean data rendering, custom UX, and efficient databases.
           </p>
           <div className="h-1 w-12 bg-blue-600 rounded-full" />
@@ -65,7 +65,7 @@ export default function Projects() {
 
         {/* Categories Controls */}
         <div className="flex justify-center mb-12 animate-none" id="projects-filters">
-          <div className="inline-flex p-1.5 bg-slate-50 border border-slate-200 rounded-2xl">
+          <div className="inline-flex p-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl">
             {categories.map((cat) => {
               const isActive = filter === cat.id;
               return (
@@ -75,7 +75,7 @@ export default function Projects() {
                   className={`px-5 py-2.5 text-xs sm:text-sm font-semibold rounded-xl transition-all duration-300 relative focus:outline-none cursor-pointer ${
                     isActive
                       ? 'text-white shadow-sm font-bold'
-                      : 'text-slate-600 hover:text-slate-900'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
                   }`}
                   id={`project-tab-${cat.id}`}
                 >
@@ -104,15 +104,16 @@ export default function Projects() {
               <motion.div
                 key={project.id}
                 layout
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-50px' }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.35 }}
-                className="bg-white border border-slate-200 hover:border-blue-500/30 shadow-sm hover:shadow-md transition-all duration-300 group flex flex-col rounded-3xl overflow-hidden hover:-translate-y-1.5"
+                transition={{ duration: 0.45, ease: 'easeOut' }}
+                className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-850 hover:border-blue-500/30 shadow-sm hover:shadow-md transition-all duration-300 group flex flex-col rounded-3xl overflow-hidden hover:-translate-y-1.5"
                 id={`project-card-${project.id}`}
               >
                 {/* Image Display Frame with Overlay */}
-                <div className="relative aspect-video overflow-hidden bg-slate-50 border-b border-slate-200">
+                <div className="relative aspect-video overflow-hidden bg-slate-50 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-850">
                   <img
                     src={project.image}
                     alt={project.title}
@@ -163,7 +164,7 @@ export default function Projects() {
                   </div>
 
                   {/* Top-right category Pill */}
-                  <span className="absolute top-4 right-4 z-10 font-mono text-[10px] uppercase font-bold tracking-wider text-blue-600 bg-blue-50 border border-blue-200 px-3 py-1.5 rounded-full shadow-sm">
+                  <span className="absolute top-4 right-4 z-10 font-mono text-[10px] uppercase font-bold tracking-wider text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 px-3 py-1.5 rounded-full shadow-sm">
                     {project.category === 'fullstack' ? 'Full Stack' : 'Frontend'}
                   </span>
                 </div>
@@ -171,12 +172,12 @@ export default function Projects() {
                 {/* Info Text block */}
                 <div className="p-6 flex flex-col flex-1" id={`project-content-${project.id}`}>
                   {/* Title */}
-                  <h3 className="text-lg font-bold text-slate-800 group-hover:text-blue-600 transition-colors mb-2.5 font-sans leading-snug">
+                  <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 group-hover:text-blue-600 transition-colors mb-2.5 font-sans leading-snug">
                     {project.title}
                   </h3>
 
                   {/* Description */}
-                  <p className="text-sm text-slate-650 leading-relaxed mb-6 flex-1">
+                  <p className="text-sm text-slate-650 dark:text-slate-400 leading-relaxed mb-6 flex-1">
                     {project.description}
                   </p>
 
@@ -185,7 +186,7 @@ export default function Projects() {
                     {project.tech.map((t) => (
                       <span
                         key={t}
-                        className="font-mono text-[10px] font-semibold text-slate-605 bg-slate-50 border border-slate-201 px-2.5 py-1 rounded-md"
+                        className="font-mono text-[10px] font-semibold text-slate-605 dark:text-slate-300 bg-slate-50 dark:bg-slate-950 border border-slate-201 dark:border-slate-800 px-2.5 py-1 rounded-md"
                       >
                         {t}
                       </span>
@@ -193,12 +194,12 @@ export default function Projects() {
                   </div>
 
                   {/* Readability link list for mobile displays */}
-                  <div className="flex items-center justify-between pt-4 border-t border-slate-200 sm:hidden">
+                  <div className="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800 sm:hidden">
                     <a
                       href={project.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center space-x-1 text-xs font-mono font-bold text-slate-600"
+                      className="inline-flex items-center space-x-1 text-xs font-mono font-bold text-slate-600 dark:text-slate-450"
                     >
                       <Github className="w-3.5 h-3.5" />
                       <span>Code Repo</span>
@@ -241,18 +242,18 @@ export default function Projects() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-white/95 backdrop-blur-md overflow-y-auto overflow-x-hidden flex flex-col justify-start items-center py-6 px-4 sm:px-6"
+            className="fixed inset-0 z-50 bg-white/95 dark:bg-slate-950/98 backdrop-blur-md overflow-y-auto overflow-x-hidden flex flex-col justify-start items-center py-6 px-4 sm:px-6"
             id="fastmovie-fullscreen-overlay"
           >
             {/* Modal Exit Header Anchor */}
             <div className="max-w-7xl w-full flex justify-between items-center mb-6 z-30 relative py-2">
-              <div className="flex items-center space-x-2 text-xs font-mono tracking-widest text-blue-600">
-                <Sparkles className="w-4 h-4 text-blue-600" />
+              <div className="flex items-center space-x-2 text-xs font-mono tracking-widest text-blue-600 dark:text-blue-400">
+                <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                 <span>FASTMOVIE INTERACTIVE WORKSPACE</span>
               </div>
               <button
                 onClick={() => setSelectedProject(null)}
-                className="p-2 sm:p-2.5 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-slate-900 active:scale-95 transition-all font-sans text-xs flex items-center space-x-1 px-4 cursor-pointer"
+                className="p-2 sm:p-2.5 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-850 hover:text-slate-900 dark:hover:text-white active:scale-95 transition-all font-sans text-xs flex items-center space-x-1 px-4 cursor-pointer"
                 id="close-fastmovie-modal"
               >
                 <X className="w-4 h-4" />
@@ -262,7 +263,7 @@ export default function Projects() {
 
             {/* Simulated Live Viewport matching user's screenshot layout */}
             <div 
-              className="max-w-7xl w-full rounded-3xl bg-white text-slate-900 border border-slate-200 shadow-[0_30px_90px_rgba(0,0,0,0.12)] relative overflow-hidden flex flex-col pt-4 pb-12 px-4 sm:px-8 text-left"
+              className="max-w-7xl w-full rounded-3xl bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-800 shadow-[0_30px_90px_rgba(0,0,0,0.12)] relative overflow-hidden flex flex-col pt-4 pb-12 px-4 sm:px-8 text-left"
               id="simulated-fastmovie-viewport"
             >
               {/* Outer Neon Glow Layer */}
@@ -270,7 +271,7 @@ export default function Projects() {
 
               {/* SECTION: 1. Capsule Header */}
               <div 
-                className="w-full rounded-2xl border border-blue-100 bg-slate-50 px-4 sm:px-6 py-3.5 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 z-40 relative shadow-[0_0_20px_rgba(37,99,235,0.04)] mb-10"
+                className="w-full rounded-2xl border border-blue-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 px-4 sm:px-6 py-3.5 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 z-40 relative shadow-[0_0_20px_rgba(37,99,235,0.04)] mb-10"
                 id="capsule-hdr"
               >
                 {/* Logo with Blue Circle */}
@@ -278,7 +279,7 @@ export default function Projects() {
                   <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-blue-600 text-white font-extrabold flex items-center justify-center font-sans shadow-[0_0_15px_rgba(37,99,235,0.25)] text-lg">
                     F
                   </div>
-                  <span className="font-black text-xl tracking-wider text-slate-900 font-sans sm:text-2xl">
+                  <span className="font-black text-xl tracking-wider text-slate-900 dark:text-slate-100 font-sans sm:text-2xl">
                     FASTMOVIE
                   </span>
                 </div>
@@ -294,7 +295,7 @@ export default function Projects() {
                         className={`text-[11px] sm:text-xs font-black tracking-widest px-4 py-2.5 rounded-full transition-all cursor-pointer ${
                           isTabActive
                             ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.3)] font-extrabold scale-105'
-                            : 'text-slate-600 hover:text-blue-600'
+                            : 'text-slate-600 dark:text-slate-400 hover:text-blue-600'
                         }`}
                       >
                         {btn}
@@ -316,13 +317,13 @@ export default function Projects() {
                       placeholder="Search movie"
                       value={fastMovieSearch}
                       onChange={(e) => setFastMovieSearch(e.target.value)}
-                      className="bg-white border border-slate-200 rounded-xl pl-3 px-8 py-2 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 w-36 sm:w-44 transition-all"
+                      className="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl pl-3 px-8 py-2 text-xs text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:border-blue-600 w-36 sm:w-44 transition-all"
                     />
                     <Search className="w-3.5 h-3.5 text-slate-405 absolute left-3 top-2.5" />
                     {fastMovieSearch && (
                       <button 
                         onClick={() => setFastMovieSearch('')}
-                        className="text-slate-500 absolute right-2 top-2.5 text-[9px] font-mono hover:text-slate-800 border bg-white px-1 rounded hover:bg-slate-50"
+                        className="text-slate-500 absolute right-2 top-2.5 text-[9px] font-mono hover:text-slate-800 border bg-white dark:bg-slate-900 px-1 rounded hover:bg-slate-50 dark:hover:bg-slate-800"
                       >
                         CLR
                       </button>
@@ -338,9 +339,9 @@ export default function Projects() {
 
               {/* Category-Specific dynamic text if searched */}
               {fastMovieSearch && (
-                <div className="mb-6 p-3 bg-blue-50/80 border border-blue-200 text-xs text-blue-650 rounded-xl flex items-center justify-between">
+                <div className="mb-6 p-3 bg-blue-50/80 dark:bg-blue-900/10 border border-blue-200 dark:border-blue-800/30 text-xs text-blue-650 dark:text-blue-400 rounded-xl flex items-center justify-between">
                   <span>Filtered FastMovie catalog for keyword: "{fastMovieSearch}"</span>
-                  <button onClick={() => setFastMovieSearch('')} className="underline text-slate-700 hover:text-blue-600 font-bold">Show All</button>
+                  <button onClick={() => setFastMovieSearch('')} className="underline text-slate-700 dark:text-slate-305 hover:text-blue-600 font-bold">Show All</button>
                 </div>
               )}
 
@@ -353,20 +354,20 @@ export default function Projects() {
                 <div className="lg:col-span-7 flex flex-col space-y-6 relative z-10" id="fastmovie-hero-text">
                   
                   {/* Tagline */}
-                  <div className="flex items-center space-x-2 text-xs font-black tracking-widest text-blue-600 uppercase">
+                  <div className="flex items-center space-x-2 text-xs font-black tracking-widest text-blue-600 dark:text-blue-450 uppercase">
                     <span className="text-lg font-black leading-none">|</span>
                     <span>LIMITLESS ENTERTAINMENT</span>
                   </div>
 
                   {/* Gigantic Title - Matches screenshot styled elements */}
                   <div className="space-y-1 sm:space-y-2">
-                    <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-black font-sans leading-none text-slate-900 block">
+                    <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-black font-sans leading-none text-slate-900 dark:text-slate-100 block">
                       UNLIMITED <span className="text-blue-600 drop-shadow-[0_0_20px_rgba(37,99,235,0.15)]">MOVIES</span>
                     </h1>
                     
                     {/* Highlighter secondary phrase ANYTIME, ANYWHERE */}
                     <div className="inline-block relative">
-                      <h3 className="text-xl sm:text-2xl md:text-3xl font-black font-sans tracking-wide text-slate-805 uppercase flex items-center space-x-1">
+                      <h3 className="text-xl sm:text-2xl md:text-3xl font-black font-sans tracking-wide text-slate-805 dark:text-slate-205 uppercase flex items-center space-x-1">
                         <span>ANYTIME, ANYWHERE</span>
                       </h3>
                       <div className="h-1 bg-gradient-to-r from-blue-500 to-transparent rounded w-full mt-1.5 shadow-[0_2px_10px_rgba(37,99,235,0.2)]" />
@@ -374,7 +375,7 @@ export default function Projects() {
                   </div>
 
                   {/* Paragraph bio */}
-                  <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-xl">
+                  <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed max-w-xl">
                     Stream the latest blockbusters, cult classics, and exclusive series. Dive into a world of cinematic stories — all in one place.
                   </p>
 
@@ -390,7 +391,7 @@ export default function Projects() {
 
                     <button 
                       onClick={() => alert('FastMovie exclusive trailer initializing... (Cinematic Audio System Booting)')}
-                      className="px-8 py-3.5 bg-transparent hover:bg-slate-50 active:scale-95 text-slate-800 border-2 border-blue-600 font-bold text-xs uppercase tracking-widest rounded-full transition-all flex items-center justify-center space-x-2 cursor-pointer"
+                      className="px-8 py-3.5 bg-transparent hover:bg-slate-50 dark:hover:bg-slate-800 active:scale-95 text-slate-800 dark:text-slate-200 border-2 border-blue-600 font-bold text-xs uppercase tracking-widest rounded-full transition-all flex items-center justify-center space-x-2 cursor-pointer"
                     >
                       <Film className="w-4 h-4 text-blue-600" />
                       <span>Watch Trailer</span>
@@ -404,7 +405,7 @@ export default function Projects() {
                   <div className="relative w-72 h-96 sm:w-80 sm:h-[420px]" id="poster-stack-container">
                     
                     {/* Background Poster 2: Rocky Series IMAX (shifted, tilted right) */}
-                    <div className="absolute top-4 left-10 w-48 h-72 sm:w-56 sm:h-80 rounded-2xl bg-white border border-slate-200 overflow-hidden shadow-2xl rotate-6 transform opacity-40 hover:opacity-100 transition-opacity duration-300 pointer-events-none sm:pointer-events-auto">
+                    <div className="absolute top-4 left-10 w-48 h-72 sm:w-56 sm:h-80 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 overflow-hidden shadow-2xl rotate-6 transform opacity-40 hover:opacity-100 transition-opacity duration-300 pointer-events-none sm:pointer-events-auto">
                       <div className="absolute top-3 left-3 bg-blue-600 text-white font-mono font-black text-[8px] px-2 py-0.5 rounded uppercase">
                         IMAX Series
                       </div>

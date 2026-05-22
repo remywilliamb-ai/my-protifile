@@ -13,37 +13,52 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 
 export default function App() {
-  const isDarkMode = true; // Cinematic dark theme is default and persistent always
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    const saved = localStorage.getItem('theme');
+    return saved !== null ? saved === 'dark' : true;
+  });
   const [loading, setLoading] = useState(true);
 
   // System boots loading simulation
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 1800); // Quick elegant loading time
+    }, 1850); // Quick elegant loading time
     return () => clearTimeout(timer);
   }, []);
 
   // Dark mode class implementation
   useEffect(() => {
     const root = document.documentElement;
-    root.classList.remove('dark');
-  }, []);
+    if (isDarkMode) {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+  }, [isDarkMode]);
+
+  const toggleDarkMode = () => {
+    setIsDarkMode((prev) => {
+      const newVal = !prev;
+      localStorage.setItem('theme', newVal ? 'dark' : 'light');
+      return newVal;
+    });
+  };
 
   return (
-    <div className="min-h-screen transition-colors duration-300 bg-white text-slate-900" id="app-root-wrapper">
+    <div className="min-h-screen transition-colors duration-300 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100" id="app-root-wrapper">
       <AnimatePresence>
         {loading ? (
-          /* Elegant Minimal RE Logo Loader Screen with white background */
+          /* Elegant Minimal RE Logo Loader Screen with theme-aware background */
           <motion.div
             key="preloader"
             exit={{ opacity: 0, scale: 0.98 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-white text-slate-900 select-none"
+            transition={{ duration: 0.35, ease: 'easeInOut' }}
+            className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-white dark:bg-slate-950 text-slate-900 dark:text-white select-none transition-colors duration-300"
             id="app-preloader"
           >
             {/* Subtle soft visual gradient glow background decoration */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] rounded-full bg-gradient-to-tr from-amber-200/40 via-orange-100/25 to-transparent blur-[140px] pointer-events-none" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] rounded-full bg-gradient-to-tr from-amber-200/30 via-orange-150/15 to-transparent dark:from-amber-600/10 dark:via-orange-500/5 blur-[140px] pointer-events-none" />
 
             {/* Main Interactive Loader Brand Hub */}
             <div className="relative flex flex-col items-center" id="loading-re-container">
@@ -54,7 +69,7 @@ export default function App() {
                 <motion.div
                   animate={{ rotate: 360 }}
                   transition={{ repeat: Infinity, duration: 15, ease: "linear" }}
-                  className="absolute inset-x-0 inset-y-0 rounded-full border-2 border-dashed border-amber-500/30"
+                  className="absolute inset-x-0 inset-y-0 rounded-full border-2 border-dashed border-amber-500/30 dark:border-amber-400/40"
                 />
 
                 {/* 2. Middle Orbit (Counter-Clockwise elegance, fast-spinning dual gold segments) */}
@@ -65,7 +80,7 @@ export default function App() {
                 />
 
                 {/* 3. Outer Ring Frame Glow aura */}
-                <div className="absolute w-28 h-28 rounded-full bg-amber-400/10 blur-xl animate-pulse" />
+                <div className="absolute w-28 h-28 rounded-full bg-amber-400/10 dark:bg-amber-400/5 blur-xl animate-pulse" />
 
                 {/* 4. Elegant custom golden-glowing solid circular emblem for "RE" */}
                 <motion.div
@@ -97,7 +112,7 @@ export default function App() {
                   transition={{ repeat: Infinity, duration: 2.5, ease: "linear" }}
                   className="absolute w-[124px] h-[124px]"
                 >
-                  <div className="w-3.5 h-3.5 bg-gradient-to-tr from-amber-400 to-amber-600 rounded-full border-2 border-white absolute -top-1.5 left-1/2 -translate-x-1/2 shadow-lg shadow-amber-500/40" />
+                  <div className="w-3.5 h-3.5 bg-gradient-to-tr from-amber-400 to-amber-600 rounded-full border-2 border-white dark:border-slate-800 absolute -top-1.5 left-1/2 -translate-x-1/2 shadow-lg shadow-amber-500/40" />
                 </motion.div>
               </div>
 
@@ -107,7 +122,7 @@ export default function App() {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.1, duration: 0.4 }}
-                  className="text-sm font-black font-sans tracking-[0.3em] text-slate-900 uppercase bg-clip-text"
+                  className="text-sm font-black font-sans tracking-[0.3em] text-slate-900 dark:text-slate-100 uppercase bg-clip-text"
                 >
                   REMY WILLIAM
                 </motion.h2>
@@ -116,7 +131,7 @@ export default function App() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.2, duration: 0.4 }}
-                  className="text-[9px] font-mono tracking-[0.18em] text-amber-600 uppercase font-black flex items-center justify-center gap-2"
+                  className="text-[9px] font-mono tracking-[0.18em] text-amber-650 dark:text-amber-550 uppercase font-black flex items-center justify-center gap-2"
                 >
                   <span>STUDIO</span>
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping inline-block" />
@@ -135,7 +150,7 @@ export default function App() {
             id="app-main-layout"
           >
             {/* Header Navbar */}
-            <Navbar isDarkMode={isDarkMode} />
+            <Navbar isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
             
             {/* Main sections wrapper */}
             <main>

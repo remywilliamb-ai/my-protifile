@@ -9,7 +9,7 @@ export default function Timeline() {
   return (
     <section
       id="journey"
-      className="relative py-24 bg-slate-50 overflow-hidden border-t border-slate-100"
+      className="relative py-24 bg-slate-50 dark:bg-slate-950 overflow-hidden border-t border-slate-100 dark:border-slate-900 transition-colors duration-300"
     >
       {/* Dynamic atmospheric shapes */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -23,13 +23,13 @@ export default function Timeline() {
       <div className="max-w-7xl mx-auto px-6 relative z-10" id="timeline-container">
         {/* Section Header */}
         <div className="flex flex-col items-center text-center space-y-4 mb-20" id="timeline-header">
-          <span className="font-mono text-xs text-blue-600 font-bold uppercase tracking-widest bg-blue-50 px-3.5 py-1.5 rounded-full border border-blue-200">
+          <span className="font-mono text-xs text-blue-600 font-bold uppercase tracking-widest bg-blue-50 dark:bg-blue-500/10 px-3.5 py-1.5 rounded-full border border-blue-200 dark:border-blue-500/20">
             Education Timeline
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold font-sans tracking-tight text-slate-900">
+          <h2 className="text-3xl sm:text-4xl font-bold font-sans tracking-tight text-slate-900 dark:text-slate-100">
             Level 5 Software Engineering Journey
           </h2>
-          <p className="text-slate-500 max-w-xl text-center text-sm leading-relaxed">
+          <p className="text-slate-500 dark:text-slate-400 max-w-xl text-center text-sm leading-relaxed">
             The incremental academic progression of a software engineer, mapping foundations in hardware straight through to micro-service APIs.
           </p>
           <div className="h-1 w-12 bg-blue-600 rounded-full" />
@@ -38,7 +38,7 @@ export default function Timeline() {
         {/* Timeline body wrapper */}
         <div className="relative" id="timeline-body">
           {/* Vertical central spine line for desktop / left margin line for mobile */}
-          <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-[2px] bg-slate-200 md:-translate-x-1/2" />
+          <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-[2px] bg-slate-200 dark:bg-slate-800 md:-translate-x-1/2" />
 
           {/* Cards collection */}
           <div className="space-y-12" id="timeline-events-list">
@@ -55,7 +55,7 @@ export default function Timeline() {
                   id={`timeline-node-${index}`}
                 >
                   {/* Timeline node bullet locator element */}
-                  <div className="absolute left-4 md:left-1/2 top-4 md:top-8 -translate-x-[15px] md:-translate-x-1/2 z-20 flex items-center justify-center w-[32px] h-[32px] rounded-full bg-white border-2 border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.2)] text-blue-600 transition-transform duration-300 group-hover:scale-110">
+                  <div className="absolute left-4 md:left-1/2 top-4 md:top-8 -translate-x-[15px] md:-translate-x-1/2 z-20 flex items-center justify-center w-[32px] h-[32px] rounded-full bg-white dark:bg-slate-900 border-2 border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.2)] text-blue-600 dark:text-blue-405 transition-transform duration-300 group-hover:scale-110">
                     <IconComponent className="w-3.5 h-3.5" />
                   </div>
 
@@ -70,38 +70,38 @@ export default function Timeline() {
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true, margin: '-100px' }}
                       transition={{ duration: 0.5, ease: 'easeOut' }}
-                      className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-blue-500 transition-all group block relative"
+                      className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-blue-500 transition-all group block relative"
                       id={`timeline-card-${index}`}
                     >
                       {/* Period indicator */}
-                      <span className="inline-flex items-center space-x-1 font-mono text-xs font-bold text-blue-600 bg-blue-50 py-1.5 px-3 rounded-full mb-4 border border-blue-100">
+                      <span className="inline-flex items-center space-x-1 font-mono text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-500/10 py-1.5 px-3 rounded-full mb-4 border border-blue-100 dark:border-blue-500/20">
                         <Calendar className="w-3.5 h-3.5 text-blue-500" />
                         <span>{ev.period}</span>
                       </span>
 
                       {/* Header content */}
-                      <h3 className="text-lg font-extrabold text-slate-900 group-hover:text-blue-600 transition-colors duration-250 font-sans leading-tight">
+                      <h3 className="text-lg font-extrabold text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-250 font-sans leading-tight">
                         {ev.title}
                       </h3>
-                      <h4 className="text-xs font-mono font-medium tracking-wide text-slate-400 uppercase mt-1 mb-4 leading-none">
+                      <h4 className="text-xs font-mono font-medium tracking-wide text-slate-400 dark:text-slate-500 uppercase mt-1 mb-4 leading-none">
                         {ev.subtitle}
                       </h4>
 
                       {/* Description narrative body */}
-                      <p className="text-sm text-slate-500 leading-relaxed mb-6">
+                      <p className="text-sm text-slate-505 dark:text-slate-400 leading-relaxed mb-6">
                         {ev.description}
                       </p>
 
                       {/* Micro skill bullet highlights */}
-                      <div className="border-t border-slate-100 pt-4" id={`timeline-skills-list-${index}`}>
-                        <div className="text-[10px] uppercase font-mono tracking-widest text-slate-400 mb-2.5 font-bold">
+                      <div className="border-t border-slate-100 dark:border-slate-800 pt-4" id={`timeline-skills-list-${index}`}>
+                        <div className="text-[10px] uppercase font-mono tracking-widest text-slate-404 dark:text-slate-505 mb-2.5 font-bold">
                           Core Competencies
                         </div>
                         <div className="flex flex-wrap gap-1.5 text-left">
                           {ev.skillsAcquired.map((skill, subIdx) => (
                             <span
                               key={subIdx}
-                              className="inline-flex items-center space-x-1 font-mono text-[10px] font-semibold text-slate-600 bg-slate-50 border border-slate-100 px-2.5 py-1 rounded-md"
+                              className="inline-flex items-center space-x-1 font-mono text-[10px] font-semibold text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-850 px-2.5 py-1 rounded-md"
                             >
                               <ChevronRight className="w-2.5 h-2.5 text-blue-500 shrink-0" />
                               <span>{skill}</span>

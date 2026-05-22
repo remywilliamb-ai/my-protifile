@@ -105,7 +105,7 @@ export default function Skills() {
   return (
     <section
       id="skills"
-      className="relative py-24 bg-white overflow-hidden"
+      className="relative py-24 bg-white dark:bg-slate-950 overflow-hidden transition-colors duration-300"
     >
       {/* Dynamic Ambient Blur Spheres */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -120,10 +120,10 @@ export default function Skills() {
           <span className="font-mono text-xs text-blue-600 font-bold uppercase tracking-widest bg-blue-500/10 px-3.5 py-1.5 rounded-full border border-blue-500/15">
             Skills Inventory
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold font-sans tracking-tight text-slate-900">
+          <h2 className="text-3xl sm:text-4xl font-bold font-sans tracking-tight text-slate-900 dark:text-slate-100">
             Dynamic Technical Capabilities
           </h2>
-          <p className="text-slate-600 max-w-xl text-center text-sm leading-relaxed">
+          <p className="text-slate-600 dark:text-slate-400 max-w-xl text-center text-sm leading-relaxed">
             Hands-on expertise structured through course modules, self-driven research, and full-stack project executions.
           </p>
           <div className="h-1 w-12 bg-blue-600 rounded-full" />
@@ -131,7 +131,7 @@ export default function Skills() {
 
         {/* Tab Controls Filters */}
         <div className="flex justify-center mb-12" id="skills-tabs-wrap">
-          <div className="inline-flex flex-wrap gap-1 p-1 bg-slate-50 border border-slate-205 rounded-2xl max-w-full justify-center">
+          <div className="inline-flex flex-wrap gap-1 p-1 bg-slate-50 dark:bg-slate-900 border border-slate-205 dark:border-slate-800 rounded-2xl max-w-full justify-center">
             {tabs.map((tab) => {
               const isActive = filter === tab.id;
               return (
@@ -141,7 +141,7 @@ export default function Skills() {
                   className={`relative px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-semibold rounded-xl transition-all duration-350 focus:outline-none cursor-pointer ${
                     isActive
                       ? 'text-white font-bold'
-                      : 'text-slate-600 hover:text-slate-900'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
                   }`}
                   id={`skill-tab-${tab.id}`}
                 >
@@ -175,12 +175,12 @@ export default function Skills() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.25 }}
-                  className="bg-white border border-slate-200 hover:border-blue-500/40 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 group relative p-6 block"
+                  className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-blue-500/40 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 group relative p-6 block"
                   id={`skill-card-${skill.name.toLowerCase().replace(/[ .&]/g, '-')}`}
                 >
                   <div className="flex items-center justify-between mb-4">
                     {/* SVG logo */}
-                    <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center">
+                    <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-850 flex items-center justify-center">
                       <TechLogo name={skill.name} />
                     </div>
                     {/* Percentage */}
@@ -190,15 +190,15 @@ export default function Skills() {
                   </div>
 
                   {/* Title & category */}
-                  <h3 className="text-base font-bold text-slate-800 mb-4 flex items-center justify-between font-sans">
+                  <h3 className="text-base font-bold text-slate-800 dark:text-slate-200 mb-4 flex items-center justify-between font-sans">
                     <span>{skill.name}</span>
-                    <span className="text-[10px] uppercase font-mono tracking-wider text-slate-500 font-bold">
+                    <span className="text-[10px] uppercase font-mono tracking-wider text-slate-500 dark:text-slate-400 font-bold">
                       {skill.category}
                     </span>
                   </h3>
 
                   {/* Visual Progress bar */}
-                  <div className="relative w-full h-2 bg-slate-100 rounded-full overflow-hidden mb-1">
+                  <div className="relative w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden mb-1">
                     <motion.div
                       initial={{ width: 0 }}
                       animate={{ width: `${skill.level}%` }}
@@ -216,21 +216,21 @@ export default function Skills() {
         </motion.div>
 
         {/* Dynamic educational certification footnote banner */}
-        <div className="mt-16 bg-slate-50 rounded-3xl border border-dashed border-slate-200 p-8 flex flex-col sm:flex-row items-center justify-between gap-6" id="skills-footnote">
+        <div className="mt-16 bg-slate-50 dark:bg-slate-900 rounded-3xl border border-dashed border-slate-200 dark:border-slate-800 p-8 flex flex-col sm:flex-row items-center justify-between gap-6" id="skills-footnote">
           <div className="flex items-start space-x-4">
             <div className="p-3 bg-blue-500/10 rounded-2xl text-blue-600 flex items-center justify-center shrink-0">
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
-              <h4 className="text-sm font-bold text-slate-800 mb-1">Looking for a specific tech stack or framework?</h4>
-              <p className="text-xs text-slate-600 leading-relaxed max-w-xl">
+              <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200 mb-1">Looking for a specific tech stack or framework?</h4>
+              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed max-w-xl">
                 As a final-year Level 5 Software Development student, I undergo weekly logical evaluations. My foundation in engineering design principles empowers me to adapt and master alternative stacks and tools inside modern corporate architectures rapidly.
               </p>
             </div>
           </div>
           <a
             href="#contact"
-            className="text-xs font-mono font-bold tracking-wider text-blue-600 bg-blue-50 hover:bg-blue-100 px-5 py-3 rounded-xl border border-blue-200 shrink-0 uppercase transition-all"
+            className="text-xs font-mono font-bold tracking-wider text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950 hover:bg-blue-100 dark:hover:bg-blue-900 px-5 py-3 rounded-xl border border-blue-200 dark:border-blue-900 shrink-0 uppercase transition-all"
           >
             Request Custom Build
           </a>
