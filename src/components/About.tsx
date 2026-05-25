@@ -4,36 +4,42 @@ import { LayoutGrid, Cpu, BookOpen, Globe, Coffee, Heart, Users, Sparkles, Phone
 import { usePortfolio } from '../data_context';
 
 export default function About() {
-  const { personalInfo } = usePortfolio();
+  const { personalInfo, language, t } = usePortfolio();
   const [showCoffeeDetails, setShowCoffeeDetails] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const highlightPoints = [
     {
-      title: 'Frontend UI/UX',
-      desc: 'Developing stunning, eye-catching, and interactive user interfaces utilizing glassmorphism, seamless layout motions, and responsive frameworks.',
+      title: t('about.point.0.title'),
+      desc: t('about.point.0.desc'),
       icon: LayoutGrid,
       color: 'text-blue-500 bg-blue-500/10 border-blue-500/20'
     },
     {
-      title: 'Backend Engineering',
-      desc: 'Architecting robust database workflows, token protection routes, RESTful endpoints, and custom logical systems using modern server patterns.',
+      title: t('about.point.1.title'),
+      desc: t('about.point.1.desc'),
       icon: Cpu,
       color: 'text-blue-500 bg-blue-500/10 border-blue-500/20'
     },
     {
-      title: 'ICT System Integration',
-      desc: 'Deep core interest in computer networks, system configurations, hardware diagnostic pipelines, and localized technology solutions.',
+      title: t('about.point.2.title'),
+      desc: t('about.point.2.desc'),
       icon: Globe,
       color: 'text-blue-500 bg-blue-500/10 border-blue-500/20'
     },
     {
-      title: 'Level 5 Core Studies',
-      desc: 'Finalizing an exhaustive Software Development Diploma Curriculum in Rwanda, combining structured algorithmics with real team projects.',
+      title: t('about.point.3.title'),
+      desc: t('about.point.3.desc'),
       icon: BookOpen,
       color: 'text-blue-500 bg-blue-500/10 border-blue-500/20'
     }
   ];
+
+  const localizedLongBio = language === 'rw'
+    ? 'Ndi umuhanga mu gukora porogaramu z’imbuga ukiri muto ufite ishyaka ryinshi ryo kubaka porogaramu zizewe, zifite umutekano kandi zoroheye abakoresha b’ingeri zose. Nizeye ko ikoranabuhanga rishobora gukemura ibibazo byugarije sosiyete yacu no koroshya imirimo ya buri munsi.'
+    : language === 'fr'
+    ? 'Je suis un jeune développeur passionné par la conception de plateformes logicielles sécurisées, évolutives et parfaitement adaptées aux utilisateurs modernes. Mon engagement consiste à utiliser les meilleures technologies pour simplifier les processus complexes des entreprises.'
+    : personalInfo.longBio;
 
   return (
     <section
@@ -50,10 +56,10 @@ export default function About() {
         {/* Section Header */}
         <div className="flex flex-col items-center text-center space-y-4 mb-16" id="about-header">
           <span className="font-mono text-xs text-blue-600 font-bold uppercase tracking-widest bg-blue-500/10 px-3.5 py-1.5 rounded-full border border-blue-500/20">
-            About Me
+            {t('about.tag')}
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold font-sans tracking-tight text-slate-900 dark:text-slate-100">
-            Driven by Purpose, Inspired by Technology
+            {t('about.title')}
           </h2>
           <div className="h-1 w-12 bg-blue-550 rounded-full" />
         </div>
@@ -63,15 +69,15 @@ export default function About() {
           {/* Narrative Text Column */}
           <div className="lg:col-span-5 flex flex-col space-y-6" id="about-narrative">
             <h3 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-slate-200 flex items-center space-x-2">
-              <span>My Journey & Vision</span>
+              <span>{t('about.subtitle')}</span>
             </h3>
             
-            <p className="text-slate-700 dark:text-slate-300 leading-relaxed text-base" id="narrative-bio">
-              {personalInfo.longBio}
+            <p className="text-slate-705 dark:text-slate-300 leading-relaxed text-base" id="narrative-bio">
+              {localizedLongBio}
             </p>
 
             <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">
-              I am a final-year software developer pursuing Level 5 Diploma goals in Rwanda. Our regional tech sphere is growing rapidly, and I aim to contribute high fidelity applications that simplify modern enterprise solutions. I leverage modern frontend architectures, reliable relational systems, and token encryption pipelines.
+              {t('about.bio')}
             </p>
 
             {/* Direct Contact Phone Detail */}
@@ -80,7 +86,7 @@ export default function About() {
                 <Phone className="w-5 h-5" />
               </div>
               <div className="text-left">
-                <div className="text-[10px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400">Direct Developer Contact</div>
+                <div className="text-[10px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400">{t('about.contact_label')}</div>
                 <a href={`tel:${personalInfo.contact.phone}`} className="text-sm font-semibold text-slate-800 dark:text-slate-200 hover:text-blue-650 dark:hover:text-blue-400 transition-colors">
                   (+250) {personalInfo.contact.phone}
                 </a>
@@ -95,7 +101,7 @@ export default function About() {
                 id="btn-buy-coffee"
               >
                 <Coffee className="w-5 h-5 text-blue-600 fill-blue-600 animate-pulse" />
-                <span>Buy Me A Coffee</span>
+                <span>{t('about.buy_coffee_btn')}</span>
               </button>
 
               <AnimatePresence>
@@ -109,14 +115,14 @@ export default function About() {
                   >
                     <h4 className="text-blue-650 dark:text-blue-400 font-bold text-sm mb-2 flex items-center space-x-1.5">
                       <Heart className="w-4 h-4 fill-blue-600 text-blue-600 animate-pulse" />
-                      <span>Support My Development Journey</span>
+                      <span>{t('about.support_title')}</span>
                     </h4>
                     <p className="text-xs text-slate-600 dark:text-slate-405 leading-relaxed mb-4">
-                      Thank you! Your support fuels clean coding and premium responsive layouts.
+                      {t('about.support_desc')}
                     </p>
                     <div className="p-3.5 bg-white dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800 font-mono text-xs flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                       <div>
-                        <span className="text-[10px] text-slate-500 dark:text-slate-400 font-bold tracking-wider uppercase block mb-1">MOMO PAY (Rwanda):</span>
+                        <span className="text-[10px] text-slate-500 dark:text-slate-400 font-bold tracking-wider uppercase block mb-1">{t('about.momo_label')}</span>
                         <div className="text-blue-600 dark:text-blue-450 font-extrabold text-sm tracking-widest">*182*1*1*0786557980#</div>
                       </div>
                       
@@ -131,12 +137,12 @@ export default function About() {
                         {copied ? (
                           <>
                             <Check className="w-3.5 h-3.5" />
-                            <span>Code Copied!</span>
+                            <span>{t('about.code_copied')}</span>
                           </>
                         ) : (
                           <>
                             <Copy className="w-3.5 h-3.5" />
-                            <span>Copy Code</span>
+                            <span>{t('about.copy_code')}</span>
                           </>
                         )}
                       </button>
@@ -150,15 +156,15 @@ export default function About() {
             <div className="grid grid-cols-3 gap-4 pt-4 border-t border-slate-100 dark:border-slate-800" id="stats-row">
               <div className="flex flex-col text-left">
                 <span className="text-2xl sm:text-3xl font-bold text-blue-650 dark:text-blue-400">Level 5</span>
-                <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400 tracking-wider uppercase mt-1">Academics</span>
+                <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400 tracking-wider uppercase mt-1">{t('about.stat.academics')}</span>
               </div>
               <div className="flex flex-col text-left">
                 <span className="text-2xl sm:text-3xl font-bold text-blue-600 dark:text-blue-400">10+</span>
-                <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400 tracking-wider uppercase mt-1">Core Techs</span>
+                <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400 tracking-wider uppercase mt-1">{t('about.stat.techs')}</span>
               </div>
               <div className="flex flex-col text-left">
                 <span className="text-2xl sm:text-3xl font-bold text-blue-650 dark:text-blue-400">6+</span>
-                <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400 tracking-wider uppercase mt-1">Projects</span>
+                <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400 tracking-wider uppercase mt-1">{t('about.stat.projects')}</span>
               </div>
             </div>
           </div>
@@ -173,7 +179,7 @@ export default function About() {
                   className="bg-white dark:bg-slate-900 border border-slate-205 dark:border-slate-800 hover:border-blue-500/40 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 group relative p-6 hover:-translate-y-1 flex flex-col"
                   id={`about-card-${index}`}
                 >
-                  <div className="absolute top-0 right-0 p-3 text-slate-100 dark:text-slate-800/40 font-mono font-bold text-4xl select-none leading-none group-hover:text-blue-500/15 transition-colors">
+                  <div className="absolute top-0 right-0 p-3 text-slate-105 dark:text-slate-800/40 font-mono font-bold text-4xl select-none leading-none group-hover:text-blue-500/15 transition-colors">
                     0{index + 1}
                   </div>
                   
@@ -199,65 +205,65 @@ export default function About() {
         <div className="mt-20 pt-16 border-t border-slate-100 dark:border-slate-800" id="about-family-section">
           <div className="flex flex-col items-center text-center space-y-3 mb-12">
             <span className="font-mono text-xs text-blue-600 font-bold uppercase tracking-widest bg-blue-500/10 px-3.5 py-1.5 rounded-full border border-blue-500/20">
-              Personal Heritage
+              {t('about.family.tag')}
             </span>
             <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
-              My Family Pillar
+              {t('about.family.title')}
             </h3>
             <p className="text-slate-600 dark:text-slate-450 text-sm max-w-xl">
-              Success is built upon a sturdy foundation of love, core values, and family guidance. Meet the family of Bizimana Ngabo Remy William:
+              {t('about.family.desc')}
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Father Card */}
-            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-blue-500/40 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 p-6 flex flex-col items-center text-center relative overflow-hidden group">
+            <div className="bg-white dark:bg-slate-900 border border-slate-202 dark:border-slate-800 hover:border-blue-500/40 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 p-6 flex flex-col items-center text-center relative overflow-hidden group">
               <div className="w-14 h-14 rounded-full bg-blue-500/10 text-blue-600 flex items-center justify-center border border-blue-500/20 mb-4 group-hover:scale-110 transition-transform">
                 <Users className="w-6 h-6" />
               </div>
-              <h4 className="text-base font-bold text-slate-800 dark:text-slate-100 mb-1">Bizimana Felix</h4>
-              <span className="text-xs font-mono text-blue-600 dark:text-blue-450 uppercase tracking-widest font-semibold">Father / Parent</span>
+              <h4 className="text-base font-bold text-slate-800 dark:text-slate-100 mb-1">{t('family.dad.name')}</h4>
+              <span className="text-xs font-mono text-blue-600 dark:text-blue-450 uppercase tracking-widest font-semibold">{t('family.dad.role')}</span>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-3 leading-relaxed">
-                Guiding our household with wisdom, resourcefulness, and professional integrity.
+                {t('family.dad.desc')}
               </p>
             </div>
 
             {/* Mother Card */}
-            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-blue-500/40 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 p-6 flex flex-col items-center text-center relative overflow-hidden group">
+            <div className="bg-white dark:bg-slate-900 border border-slate-202 dark:border-slate-800 hover:border-blue-500/40 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 p-6 flex flex-col items-center text-center relative overflow-hidden group">
               <div className="w-14 h-14 rounded-full bg-blue-500/10 text-blue-600 flex items-center justify-center border border-blue-500/20 mb-4 group-hover:scale-110 transition-transform">
                 <Users className="w-6 h-6" />
               </div>
-              <h4 className="text-base font-bold text-slate-800 dark:text-slate-100 mb-1">Mukabyiringiro Anee</h4>
-              <span className="text-xs font-mono text-blue-600 dark:text-blue-450 uppercase tracking-widest font-semibold">Mother / Parent</span>
+              <h4 className="text-base font-bold text-slate-800 dark:text-slate-100 mb-1">{t('family.mom.name')}</h4>
+              <span className="text-xs font-mono text-blue-600 dark:text-blue-450 uppercase tracking-widest font-semibold">{t('family.mom.role')}</span>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-3 leading-relaxed">
-                Providing ultimate care, educational diligence, and warm core principles.
+                {t('family.mom.desc')}
               </p>
             </div>
 
             {/* Brother Card */}
-            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-blue-500/40 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 p-6 flex flex-col items-center text-center relative overflow-hidden group">
+            <div className="bg-white dark:bg-slate-900 border border-slate-202 dark:border-slate-800 hover:border-blue-500/40 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 p-6 flex flex-col items-center text-center relative overflow-hidden group">
               <div className="w-14 h-14 rounded-full bg-blue-500/10 text-blue-600 flex items-center justify-center border border-blue-500/20 mb-4 group-hover:scale-110 transition-transform">
                 <Users className="w-6 h-6" />
               </div>
-              <h4 className="text-base font-bold text-slate-800 dark:text-slate-100 mb-1">Kwizera Edison</h4>
-              <span className="text-xs font-mono text-blue-600 dark:text-blue-450 uppercase tracking-widest font-semibold">Brother / Sibling</span>
+              <h4 className="text-base font-bold text-slate-800 dark:text-slate-100 mb-1">{t('family.brother.name')}</h4>
+              <span className="text-xs font-mono text-blue-600 dark:text-blue-450 uppercase tracking-widest font-semibold">{t('family.brother.role')}</span>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-3 leading-relaxed">
-                Colleague, companion, and collaborative partner in research and learning.
+                {t('family.brother.desc')}
               </p>
             </div>
 
             {/* Self Card */}
             <div className="bg-white dark:bg-slate-900 border-2 border-blue-500/80 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-6 flex flex-col items-center text-center relative overflow-hidden group">
-              <div className="absolute top-0 right-0 bg-blue-600 text-white font-mono text-[9px] font-bold px-2 py-0.5 rounded-bl">
-                SELF
+              <div className="absolute top-0 right-0 bg-blue-600 text-white font-mono text-[9px] font-bold px-2 py-0.5 rounded-bl uppercase">
+                {language === 'rw' ? 'Jyewe' : language === 'fr' ? 'Moi' : 'SELF'}
               </div>
               <div className="w-14 h-14 rounded-full bg-blue-600/10 text-blue-600 flex items-center justify-center border border-blue-500/30 mb-4 group-hover:scale-110 transition-transform">
                 <Sparkles className="w-6 h-6 text-blue-650" />
               </div>
-              <h4 className="text-base font-bold text-blue-650 dark:text-blue-400 mb-1">Remy William</h4>
-              <span className="text-xs font-mono text-slate-500 dark:text-slate-400 uppercase tracking-widest font-bold">Born 2009 / Developer</span>
+              <h4 className="text-base font-bold text-blue-650 dark:text-blue-400 mb-1">{t('family.self.name')}</h4>
+              <span className="text-xs font-mono text-slate-500 dark:text-slate-400 uppercase tracking-widest font-bold">{t('family.self.role')}</span>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-3 leading-relaxed">
-                Dedicated youngest developer, streamlining cinematic media engines and secure backends.
+                {t('family.self.desc')}
               </p>
             </div>
           </div>

@@ -3,7 +3,7 @@ import { motion } from 'motion/react';
 import { usePortfolio } from '../data_context';
 
 export default function Footer() {
-  const { personalInfo } = usePortfolio();
+  const { personalInfo, language, t } = usePortfolio();
   const currentYear = new Date().getFullYear();
 
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
@@ -51,8 +51,8 @@ export default function Footer() {
             <div className="text-sm font-bold tracking-wider text-slate-900 dark:text-slate-100 uppercase font-sans leading-none mb-1">
               {personalInfo.fullName}
             </div>
-            <div className="text-[10px] font-mono tracking-widest text-slate-400 dark:text-slate-500 uppercase leading-none">
-              Level 5 Software Developer • Rwanda
+            <div className="text-[10px] font-mono tracking-widest text-slate-400 dark:text-slate-500 uppercase leading-none font-semibold">
+              {t('footer.subtitle')} • Rwanda 🇷🇼
             </div>
           </div>
         </div>
@@ -64,45 +64,49 @@ export default function Footer() {
             onClick={(e) => handleScroll(e, 'home')}
             className="text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-450 transition-colors uppercase tracking-widest"
           >
-            Home
+            {t('nav.home')}
           </a>
           <a
             href="#about"
             onClick={(e) => handleScroll(e, 'about')}
-            className="text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-450 transition-colors uppercase tracking-widest"
+            className="text-xs font-semibold text-slate-500 dark:text-slate-405 hover:text-blue-600 dark:hover:text-blue-450 transition-colors uppercase tracking-widest"
           >
-            About
+            {t('nav.about')}
           </a>
           <a
             href="#skills"
             onClick={(e) => handleScroll(e, 'skills')}
-            className="text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-450 transition-colors uppercase tracking-widest"
+            className="text-xs font-semibold text-slate-500 dark:text-slate-405 hover:text-blue-600 dark:hover:text-blue-450 transition-colors uppercase tracking-widest"
           >
-            Skills
+            {t('nav.skills')}
           </a>
           <a
             href="#projects"
             onClick={(e) => handleScroll(e, 'projects')}
-            className="text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-450 transition-colors uppercase tracking-widest"
+            className="text-xs font-semibold text-slate-500 dark:text-slate-405 hover:text-blue-600 dark:hover:text-blue-450 transition-colors uppercase tracking-widest"
           >
-            Projects
+            {t('nav.projects')}
           </a>
           <a
             href="#journey"
             onClick={(e) => handleScroll(e, 'journey')}
-            className="text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-450 transition-colors uppercase tracking-widest"
+            className="text-xs font-semibold text-slate-500 dark:text-slate-405 hover:text-blue-600 dark:hover:text-blue-450 transition-colors uppercase tracking-widest"
           >
-            Journey
+            {t('nav.journey')}
           </a>
         </nav>
 
         {/* Copyright notation */}
         <div className="text-center md:text-right" id="footer-copyright">
           <p className="text-xs font-mono text-slate-500 dark:text-slate-405">
-            &copy; {currentYear} {personalInfo.fullName}. All rights reserved.
+            &copy; {currentYear} {personalInfo.fullName}. {language === 'rw' ? 'Uburenganzira bwose burasubizwa.' : language === 'fr' ? 'Tous droits réservés.' : 'All rights reserved.'}
           </p>
           <p className="text-[10px] font-mono text-slate-400 dark:text-slate-500 mt-1">
-            Carefully crafted with level-5 standards in Kigali 🇷🇼
+            {language === 'rw'
+              ? 'Yubatswe neza ku nzego za level-5 i Kigali 🇷🇼'
+              : language === 'fr'
+              ? 'Conçu avec soin selon les standards de niveau 5 à Kigali 🇷🇼'
+              : 'Carefully crafted with level-5 standards in Kigali 🇷🇼'}
           </p>
         </div>
       </div>

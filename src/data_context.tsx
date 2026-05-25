@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { personalInfo as staticPersonalInfo, skillsData as staticSkillsData, projectsData as staticProjectsData, timelineData as staticTimelineData } from './data';
 import { Project, Skill, TimelineEvent } from './types';
+import { Language, translations } from './translations';
 
 interface PortfolioDataContextType {
   personalInfo: typeof staticPersonalInfo;
@@ -10,6 +11,9 @@ interface PortfolioDataContextType {
   visitorCount: number;
   isLoading: boolean;
   refreshData: () => Promise<void>;
+  language: Language;
+  setLanguage: (lang: Language) => void;
+  t: (key: string) => string;
 }
 
 const PortfolioDataContext = createContext<PortfolioDataContextType | undefined>(undefined);
@@ -21,6 +25,23 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
   const [timelineData, setTimelineData] = useState<TimelineEvent[]>(staticTimelineData);
   const [visitorCount, setVisitorCount] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [language, setLanguageState] = useState<Language>(() => {
+    const saved = localStorage.getItem('language');
+    if (saved === 'en' || saved === 'rw' || saved === 'fr') {
+      return saved as Language;
+    }
+    return 'rw';
+  });
+
+  const setLanguage = (lang: Language) => {
+    setLanguageState(lang);
+    localStorage.setItem('language', lang);
+  };
+
+  const t = (key: string): string => {
+    const dict = translations[language] || translations['en'];
+    return dict[key] || translations['en'][key] || key;
+  };
 
   const refreshData = async () => {
     try {
@@ -58,7 +79,7 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <PortfolioDataContext.Provider value={{ personalInfo, skillsData, projectsData, timelineData, visitorCount, isLoading, refreshData }}>
+    <PortfolioDataContext.Provider value={{ personalInfo, skillsData, projectsData, timelineData, visitorCount, isLoading, refreshData, language, setLanguage, t }}>
       {children}
     </PortfolioDataContext.Provider>
   );
@@ -75,7 +96,10 @@ export const usePortfolio = () => {
       timelineData: staticTimelineData,
       visitorCount: 128,
       isLoading: false,
-      refreshData: async () => {}
+      refreshData: async () => {},
+      language: 'rw' as Language,
+      setLanguage: () => {},
+      t: (key: string) => key
     };
   }
   return context;

@@ -23,24 +23,33 @@ function FloatingIcon({ children, className, delay, duration }: { children: Reac
 }
 
 export default function Hero() {
-  const { personalInfo } = usePortfolio();
+  const { personalInfo, language, t } = usePortfolio();
   const [text, setText] = useState('');
   const [roleIndex, setRoleIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const roles = [
-    'Software Developer',
-    'ICT Specialist',
-    'Tech Visionary'
+    language === 'en' ? 'Software Developer' : language === 'rw' ? 'Umuhanga mu gukora porogaramu' : 'Développeur Logiciel',
+    language === 'en' ? 'ICT Specialist' : language === 'rw' ? 'Inzobere m\'Ikoranabuhanga' : 'Spécialiste des TIC',
+    language === 'en' ? 'Tech Visionary' : language === 'rw' ? 'Umunyabitsire mu Ikoranabuhanga' : 'Visionnaire des TIC'
   ];
 
   const typingSpeed = 100;
   const deletingSpeed = 50;
   const wordPause = 2000;
 
+  // Reset typewriter when language changes to avoid type indexing inconsistencies
+  useEffect(() => {
+    setText('');
+    setRoleIndex(0);
+    setIsDeleting(false);
+  }, [language]);
+
   useEffect(() => {
     let timer: NodeJS.Timeout;
     const currentFullRole = roles[roleIndex];
+
+    if (!currentFullRole) return;
 
     if (isDeleting) {
       timer = setTimeout(() => {
@@ -61,7 +70,7 @@ export default function Hero() {
     }
 
     return () => clearTimeout(timer);
-  }, [text, isDeleting, roleIndex]);
+  }, [text, isDeleting, roleIndex, language]);
 
   const scrollToSection = (targetId: string) => {
     const el = document.getElementById(targetId);
@@ -72,6 +81,12 @@ export default function Hero() {
   };
 
   const avatarSrc = personalInfo.avatarUrl || '/src/assets/images/remy_william_avatar_1779379369567.png';
+
+  const localizedShortBio = language === 'rw'
+    ? 'Yavutse mu mwaka wa 2009 • Ni umunyeshuri ugana ku musozo mu gice cya Level 5 Software Development akaba n\'umuhanga mu ikoranabuhanga ukomoka mu Rwanda 🇷🇼, wubaka porogaramu z\'imbuga, amafoto n\'amashusho meza, hamwe n\'inzira zizewe zitanga amakuru (APIs).'
+    : language === 'fr'
+    ? 'Né en 2009 • Étudiant en dernière année de niveau 5 en développement logiciel et prodige de la technologie originaire du Rwanda 🇷🇼, concevant des systèmes web hautement immersifs, des plateformes cinématiques réactives et des API sécurisées.'
+    : personalInfo.shortBio;
 
   return (
     <section
@@ -119,13 +134,13 @@ export default function Hero() {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
             </span>
             <span className="font-mono text-xs text-blue-650 dark:text-blue-400 font-bold uppercase tracking-wider">
-              Level 5 Software Developer Student • Rwanda 🇷🇼
+              {t('hero.tagline')}
             </span>
           </div>
 
           {/* Heading */}
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-slate-900 dark:text-white font-sans">
-            Hi, I am{' '}
+            {t('hero.hi')}{' '}
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 font-extrabold mt-2 filter drop-shadow-[0_2px_10px_rgba(59,130,246,0.05)]">
               {personalInfo.fullName}
             </span>
@@ -134,13 +149,13 @@ export default function Hero() {
           {/* Typewriter text block */}
           <div className="h-12 sm:h-16 flex items-center">
             <p className="text-xl sm:text-2xl font-mono text-slate-700 dark:text-slate-350">
-              I am a <span className="text-blue-600 dark:text-blue-400 font-semibold border-r-2 border-r-blue-600 dark:border-r-blue-400 animate-pulse pr-1" id="typing-span">{text}</span>
+              {t('hero.typewriter_prefix')}<span className="text-blue-600 dark:text-blue-400 font-semibold border-r-2 border-r-blue-600 dark:border-r-blue-400 animate-pulse pr-1" id="typing-span">{text}</span>
             </p>
           </div>
 
           {/* Short Bio */}
           <p className="text-base sm:text-lg text-slate-605 dark:text-slate-400 leading-relaxed max-w-xl">
-            {personalInfo.shortBio}
+            {localizedShortBio}
           </p>
 
           {/* Action Call boundaries */}
@@ -151,7 +166,7 @@ export default function Hero() {
               className="group inline-flex items-center justify-center space-x-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-500 py-3.5 px-6 rounded-xl hover:shadow-[0_0_25px_rgba(37,99,235,0.25)] transition-all duration-300 active:scale-95 cursor-pointer font-bold"
               id="cta-projects"
             >
-              <span>Explore Projects</span>
+              <span>{t('hero.explore')}</span>
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </button>
 
@@ -162,7 +177,7 @@ export default function Hero() {
               id="cta-contact"
             >
               <Mail className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-              <span>Get in Touch</span>
+              <span>{t('hero.get_in_touch')}</span>
             </button>
           </div>
         </div>
@@ -202,8 +217,8 @@ export default function Hero() {
                 <Terminal className="w-4 h-4" />
               </div>
               <div>
-                <div className="text-[10px] font-mono uppercase tracking-widest text-slate-400 dark:text-slate-500 leading-none font-semibold">Status</div>
-                <div className="text-xs font-bold text-slate-800 dark:text-slate-200 leading-tight">Ready to Code</div>
+                <div className="text-[10px] font-mono uppercase tracking-widest text-slate-400 dark:text-slate-500 leading-none font-semibold">{t('hero.status_label')}</div>
+                <div className="text-xs font-bold text-slate-800 dark:text-slate-200 leading-tight">{t('hero.status_value')}</div>
               </div>
             </div>
           </div>

@@ -84,14 +84,14 @@ function TechLogo({ name }: { name: string }) {
 }
 
 export default function Skills() {
-  const { skillsData } = usePortfolio();
+  const { skillsData, language, t } = usePortfolio();
   const [filter, setFilter] = useState<'all' | 'frontend' | 'backend' | 'database' | 'other'>('all');
 
   const tabs = [
-    { id: 'all', label: 'All Technologies' },
-    { id: 'frontend', label: 'Frontend UI/UX' },
-    { id: 'backend', label: 'Backend APIs' },
-    { id: 'database', label: 'Databases & Tools' },
+    { id: 'all', label: language === 'rw' ? 'Ibyiciro Yose' : language === 'fr' ? 'Toutes les Technologies' : 'All Technologies' },
+    { id: 'frontend', label: language === 'rw' ? 'Mbere kuri Web (Frontend)' : language === 'fr' ? 'Partie Client (Frontend)' : 'Frontend UI/UX' },
+    { id: 'backend', label: language === 'rw' ? 'Inyuma kuri Server (Backend)' : language === 'fr' ? 'Serveurs & API (Backend)' : 'Backend Core' },
+    { id: 'database', label: language === 'rw' ? 'Ububiko & Ibikoresho' : language === 'fr' ? 'Bases de Données & Outils' : 'Databases & Tools' },
   ];
 
   // Map requested categories
@@ -102,6 +102,30 @@ export default function Skills() {
     }
     return skill.category === filter;
   });
+
+  const localizedSubtitle = language === 'rw'
+    ? 'Ubumenyi n\'ibikoresho byubatswe binyuze mu masomo, ubushakashatsi bwite, no gukora imishinga ya full-stack.'
+    : language === 'fr'
+    ? 'Compétences acquises via des modules certifiés, recherche personnelle et implémentations de projets de bout en bout.'
+    : 'Hands-on expertise structured through course modules, self-driven research, and full-stack project executions.';
+
+  const localizedFootnoteTitle = language === 'rw'
+    ? 'Waba ushaka ikoranabuhanga rimwe n\'ibikoresho runaka?'
+    : language === 'fr'
+    ? 'Vous recherchez un ensemble de technologies spécifique ?'
+    : 'Looking for a specific tech stack or framework?';
+
+  const localizedFootnoteDesc = language === 'rw'
+    ? 'Nka mushurshuri wa Level 5 Software Development, niteguye neza gukoresha ubumenyi bwanjye bwiza n\'ingamba nziza mu nzego zose, nkahita niga vuba nkanamenyera ibikoresho n\'inzira zinyuranye zikoreshwa aho mukorera.'
+    : language === 'fr'
+    ? 'En tant qu\'étudiant en développement de niveau 5, je passe des évaluations hebdomadaires. Ma base solide d\'ingénierie logicielle m\'aide à m\'adapter et maîtriser rapidement d\'autres frameworks au sein des architectures modernes.'
+    : 'As a final-year Level 5 Software Development student, I undergo weekly logical evaluations. My foundation in engineering design principles empowers me to adapt and master alternative stacks and tools inside modern corporate architectures rapidly.';
+
+  const localizedFootnotesCta = language === 'rw'
+    ? 'Saba Umushinga'
+    : language === 'fr'
+    ? 'Demander un Système'
+    : 'Request Custom Build';
 
   return (
     <section
@@ -119,13 +143,13 @@ export default function Skills() {
         {/* Section Header */}
         <div className="flex flex-col items-center text-center space-y-4 mb-16 shadow-none" id="skills-header">
           <span className="font-mono text-xs text-blue-600 font-bold uppercase tracking-widest bg-blue-500/10 px-3.5 py-1.5 rounded-full border border-blue-500/15">
-            Skills Inventory
+            {t('skills.tag')}
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold font-sans tracking-tight text-slate-900 dark:text-slate-100">
-            Dynamic Technical Capabilities
+            {t('skills.title')}
           </h2>
           <p className="text-slate-600 dark:text-slate-400 max-w-xl text-center text-sm leading-relaxed">
-            Hands-on expertise structured through course modules, self-driven research, and full-stack project executions.
+            {localizedSubtitle}
           </p>
           <div className="h-1 w-12 bg-blue-600 rounded-full" />
         </div>
@@ -167,7 +191,15 @@ export default function Skills() {
           id="skills-grid"
         >
           <AnimatePresence mode="popLayout">
-            {filteredSkills.map((skill, index) => {
+            {filteredSkills.map((skill) => {
+              const categoryLabel = skill.category === 'frontend'
+                ? t('skills.category.frontend')
+                : skill.category === 'backend'
+                ? t('skills.category.backend')
+                : skill.category === 'database'
+                ? t('skills.category.database')
+                : t('skills.category.other');
+
               return (
                 <motion.div
                   key={skill.name}
@@ -193,8 +225,8 @@ export default function Skills() {
                   {/* Title & category */}
                   <h3 className="text-base font-bold text-slate-800 dark:text-slate-200 mb-4 flex items-center justify-between font-sans">
                     <span>{skill.name}</span>
-                    <span className="text-[10px] uppercase font-mono tracking-wider text-slate-500 dark:text-slate-400 font-bold">
-                      {skill.category}
+                    <span className="text-[10px] uppercase font-mono tracking-wider text-slate-500 dark:text-slate-400 font-bold truncate max-w-[120px]" title={categoryLabel}>
+                      {categoryLabel}
                     </span>
                   </h3>
 
@@ -223,17 +255,17 @@ export default function Skills() {
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
-              <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200 mb-1">Looking for a specific tech stack or framework?</h4>
+              <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200 mb-1">{localizedFootnoteTitle}</h4>
               <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed max-w-xl">
-                As a final-year Level 5 Software Development student, I undergo weekly logical evaluations. My foundation in engineering design principles empowers me to adapt and master alternative stacks and tools inside modern corporate architectures rapidly.
+                {localizedFootnoteDesc}
               </p>
             </div>
           </div>
           <a
             href="#contact"
-            className="text-xs font-mono font-bold tracking-wider text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950 hover:bg-blue-100 dark:hover:bg-blue-900 px-5 py-3 rounded-xl border border-blue-200 dark:border-blue-900 shrink-0 uppercase transition-all"
+            className="text-xs font-mono font-bold tracking-wider text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950 hover:bg-blue-100 dark:hover:bg-blue-900 px-5 py-3 rounded-xl border border-blue-200 dark:border-blue-900 shrink-0 uppercase transition-all whitespace-nowrap"
           >
-            Request Custom Build
+            {localizedFootnotesCta}
           </a>
         </div>
         
