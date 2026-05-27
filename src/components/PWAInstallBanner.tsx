@@ -80,18 +80,57 @@ export default function PWAInstallBanner() {
     localStorage.setItem("pwa-dismissed", "true");
   };
 
-  // If already standalone (acting fully as a native app) or dismissed/invisible, do not show
-  if (isStandalone || !isVisible) return null;
+  // If already standalone (acting fully as a native app), do not show anything
+  if (isStandalone) return null;
 
   return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ y: 80, opacity: 0, scale: 0.95 }}
-        animate={{ y: 0, opacity: 1, scale: 1 }}
-        exit={{ y: 80, opacity: 0, scale: 0.95 }}
-        className="fixed bottom-22 xs:bottom-24 sm:bottom-6 left-4 right-4 sm:left-auto sm:right-6 z-[999] max-w-sm"
-        id="pwa-mobile-install-card"
-      >
+    <>
+      {/* Floating Install Trigger Button (glowing icon at bottom-right) */}
+      <AnimatePresence>
+        {!isVisible && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 20 }}
+            onClick={() => setIsVisible(true)}
+            className="fixed bottom-22 right-6 sm:bottom-6 sm:right-6 z-[998] cursor-pointer group flex items-center space-x-2 bg-slate-900/95 via-slate-900/95 to-slate-950/95 dark:bg-slate-950/95 backdrop-blur-xl text-white rounded-full p-2.5 sm:p-3 border border-amber-500/35 hover:border-amber-400 shadow-2xl transition-all"
+            id="pwa-floating-install-icon"
+            title={t("pwa.install_title")}
+            aria-label={t("pwa.install_title")}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            {/* Pulsing indicator light */}
+            <span className="absolute -top-1 -right-1 flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
+            </span>
+
+            {/* Glowing inner shadow */}
+            <div className="absolute inset-0 rounded-full bg-amber-500/5 group-hover:bg-amber-500/10 transition-colors pointer-events-none" />
+
+            {/* The main download / smart device icon */}
+            <div className="relative z-10 bg-amber-500 p-1.5 rounded-full text-slate-950 transition-colors group-hover:bg-amber-400">
+              <Smartphone className="w-4 h-4 stroke-[2.5]" />
+            </div>
+
+            {/* Expands on hover with text to describe action perfectly! */}
+            <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out font-mono font-bold text-[10px] sm:text-xs tracking-wider uppercase text-amber-400 whitespace-nowrap pl-0 group-hover:pl-1">
+              {language === "rw" ? "Yishyire kuri telefone" : language === "fr" ? "Installer l'appli" : "Install App"}
+            </span>
+          </motion.button>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {isVisible && (
+          <motion.div
+            initial={{ y: 80, opacity: 0, scale: 0.95 }}
+            animate={{ y: 0, opacity: 1, scale: 1 }}
+            exit={{ y: 80, opacity: 0, scale: 0.95 }}
+            className="fixed bottom-22 xs:bottom-24 sm:bottom-6 left-4 right-4 sm:left-auto sm:right-6 z-[999] max-w-sm"
+            id="pwa-mobile-install-card"
+          >
         <div className="bg-slate-900/95 dark:bg-slate-950/95 backdrop-blur-xl border border-amber-500/30 dark:border-amber-500/20 text-white rounded-2xl p-4 shadow-2xl relative overflow-hidden">
           {/* Glowing backlights */}
           <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/10 rounded-full blur-2xl pointer-events-none" />
@@ -174,6 +213,8 @@ export default function PWAInstallBanner() {
           )}
         </div>
       </motion.div>
+      )}
     </AnimatePresence>
+  </>
   );
 }
