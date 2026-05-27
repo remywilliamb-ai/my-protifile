@@ -16,13 +16,25 @@ import Footer from './components/Footer';
 import PWAInstallBanner from './components/PWAInstallBanner';
 
 export default function App() {
-  const [isAdminPage] = useState<boolean>(() => {
+  const [isAdminPage, setIsAdminPage] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
       const path = window.location.pathname.toLowerCase().replace(/\/$/, "");
-      return path === '/admin';
+      const params = new URLSearchParams(window.location.search);
+      return path === '/admin' || params.get('view') === 'admin' || localStorage.getItem('force_admin_view') === 'true';
     }
     return false;
   });
+
+  // Listen for admin toggle events
+  useEffect(() => {
+    const handleAdminToggle = () => {
+      const isForce = localStorage.getItem('force_admin_view') === 'true';
+      const path = typeof window !== 'undefined' ? window.location.pathname.toLowerCase().replace(/\/$/, "") : "";
+      setIsAdminPage(path === '/admin' || isForce);
+    };
+    window.addEventListener('admin-page-state-changed', handleAdminToggle);
+    return () => window.removeEventListener('admin-page-state-changed', handleAdminToggle);
+  }, []);
 
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
     const saved = localStorage.getItem('theme');

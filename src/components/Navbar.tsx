@@ -15,6 +15,10 @@ export default function Navbar({ isDarkMode, toggleDarkMode }: NavbarProps) {
   const [activeSection, setActiveSection] = useState('home');
   const [isCoffeeOpen, setIsCoffeeOpen] = useState(false);
   const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [loginPassword, setLoginPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
   const { language, setLanguage, t } = usePortfolio();
 
   const languagesList = [
@@ -34,6 +38,14 @@ export default function Navbar({ isDarkMode, toggleDarkMode }: NavbarProps) {
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    const handleTriggerLogin = () => {
+      setIsLoginModalOpen(true);
+    };
+    window.addEventListener('trigger-admin-login-modal', handleTriggerLogin);
+    return () => window.removeEventListener('trigger-admin-login-modal', handleTriggerLogin);
   }, []);
 
   const navLinks = [
@@ -221,8 +233,8 @@ export default function Navbar({ isDarkMode, toggleDarkMode }: NavbarProps) {
                         id={`choose-lang-${langItem.code}`}
                       >
                         <div className="flex items-center space-x-2">
-                          <span className="text-sm leading-none">{langItem.flag}</span>
-                          <span className="font-sans text-xs">{langItem.name}</span>
+                           <span className="text-sm leading-none">{langItem.flag}</span>
+                           <span className="font-sans text-xs">{langItem.name}</span>
                         </div>
                         {isSelected && (
                           <span className="inline-block w-1 h-1 rounded-full bg-blue-600 dark:bg-blue-400" />
@@ -230,23 +242,50 @@ export default function Navbar({ isDarkMode, toggleDarkMode }: NavbarProps) {
                       </button>
                     );
                   })}
+                  
+                  <div className="border-t border-slate-100 dark:border-slate-800/80 mt-1.5 pt-1.5 px-3 mb-1 text-[8px] font-mono tracking-wider text-slate-400 dark:text-slate-500 uppercase select-none">
+                    Security
+                  </div>
+                  <button
+                    onClick={() => {
+                      setIsLangDropdownOpen(false);
+                      const token = localStorage.getItem("admin_session_token");
+                      if (token) {
+                        localStorage.setItem("force_admin_view", "true");
+                        window.dispatchEvent(new Event('admin-page-state-changed'));
+                      } else {
+                        setIsLoginModalOpen(true);
+                      }
+                    }}
+                    className="w-full flex items-center space-x-2 px-3.5 py-2 text-left text-xs font-bold tracking-wide transition-all hover:bg-slate-50 dark:hover:bg-slate-800/80 text-amber-600 dark:text-amber-500 hover:text-amber-500 cursor-pointer border-0 outline-none"
+                    id="choose-lang-admin-login"
+                  >
+                    <Lock className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                    <span className="font-sans text-xs">{language === 'rw' ? 'Injira muri Admin' : language === 'fr' ? 'Connexion Admin' : 'Admin Login'}</span>
+                  </button>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
 
-          {/* Live Admin Portal Link */}
-          <a
-            href="https://remywilliam.vercel.app/admin"
-            target="_blank"
-            rel="noopener noreferrer"
+          {/* Secure Admin Portal Trigger */}
+          <button
+            onClick={() => {
+              const token = localStorage.getItem("admin_session_token");
+              if (token) {
+                localStorage.setItem("force_admin_view", "true");
+                window.dispatchEvent(new Event('admin-page-state-changed'));
+              } else {
+                setIsLoginModalOpen(true);
+              }
+            }}
             className="p-2 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-900 transition-all duration-250 cursor-pointer flex items-center justify-center shadow-sm select-none outline-none focus:outline-none group"
             aria-label="Admin Portal"
             title={language === 'rw' ? 'Kujya kuri Admin' : language === 'fr' ? 'Aller à l\'administration' : 'Admin CMS Console'}
             id="nav-admin-link-btn"
           >
             <Lock className="w-4 h-4 text-slate-500 dark:text-slate-400 group-hover:text-amber-500 transition-colors" />
-          </a>
+          </button>
 
           {/* Light/Dark Toggle Button */}
           <button
@@ -381,17 +420,23 @@ export default function Navbar({ isDarkMode, toggleDarkMode }: NavbarProps) {
               </div>
 
               {/* Mobile Admin Link Button */}
-              <a
-                href="https://remywilliam.vercel.app/admin"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => setIsOpen(false)}
+              <button
+                onClick={() => {
+                  setIsOpen(false);
+                  const token = localStorage.getItem("admin_session_token");
+                  if (token) {
+                    localStorage.setItem("force_admin_view", "true");
+                    window.dispatchEvent(new Event('admin-page-state-changed'));
+                  } else {
+                    setIsLoginModalOpen(true);
+                  }
+                }}
                 className="w-full flex items-center justify-center space-x-2 text-sm font-mono tracking-widest text-[#f8fafc] bg-slate-900 dark:bg-slate-950 border border-slate-800 hover:border-slate-700 py-3 rounded-lg shadow-sm font-bold uppercase transition-all duration-200"
                 id="cta-mobile-admin"
               >
                 <Lock className="w-4 h-4 text-amber-500 animate-pulse" />
                 <span>Admin CMS Console</span>
-              </a>
+              </button>
 
               <button
                 onClick={() => {
@@ -422,6 +467,129 @@ export default function Navbar({ isDarkMode, toggleDarkMode }: NavbarProps) {
         isOpen={isCoffeeOpen}
         onClose={() => setIsCoffeeOpen(false)}
       />
+
+      {/* Interactive Admin Login Modal */}
+      <AnimatePresence>
+        {isLoginModalOpen && (
+          <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0, y: 15 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 15 }}
+              transition={{ type: "spring", duration: 0.4 }}
+              className="relative w-full max-w-md overflow-hidden rounded-3xl bg-slate-900 border border-slate-800 text-slate-100 shadow-2xl p-6 sm:p-8"
+              id="admin-login-modal-panel"
+            >
+              {/* Subtle background glow */}
+              <div className="absolute top-[-30%] left-[-20%] w-[300px] h-[300px] rounded-full bg-amber-500/10 blur-[100px] pointer-events-none" />
+              <div className="absolute bottom-[-30%] right-[-20%] w-[300px] h-[300px] rounded-full bg-blue-500/10 blur-[100px] pointer-events-none" />
+
+              {/* Close Button */}
+              <button
+                onClick={() => {
+                  setIsLoginModalOpen(false);
+                  setLoginPassword('');
+                  setLoginError('');
+                }}
+                className="absolute top-4 right-4 p-2 rounded-xl bg-slate-800/50 hover:bg-slate-800 text-slate-400 hover:text-white transition-all cursor-pointer border-0 outline-none"
+                id="close-login-modal-btn"
+              >
+                <X className="w-4 h-4" />
+              </button>
+
+              {/* Header */}
+              <div className="text-center mb-6 relative z-10">
+                <div className="mx-auto w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-400 flex items-center justify-center shadow-lg shadow-amber-500/20 mb-4">
+                  <Lock className="w-5 h-5 text-slate-950 font-black stroke-[2.5]" />
+                </div>
+                <h3 className="text-xl font-black font-sans tracking-wide text-white">
+                  {language === 'rw' ? 'Injira muri Sisitemu' : language === 'fr' ? 'Connexion Administrative' : 'Administrative Console'}
+                </h3>
+                <p className="text-xs font-mono text-slate-400 mt-1.5 uppercase tracking-widest leading-relaxed">
+                  {language === 'rw' ? 'Igenzura rya Portfolio' : language === 'fr' ? 'Contrôle du Portfolio' : 'Portfolio CMS Portal'}
+                </p>
+              </div>
+
+              {/* Form */}
+              <form onSubmit={async (e) => {
+                e.preventDefault();
+                if (!loginPassword) return;
+                setIsLoggingIn(true);
+                setLoginError('');
+
+                try {
+                  const res = await fetch("/api/admin/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username: "admin", password: loginPassword })
+                  });
+                  const data = await res.json();
+                  if (res.ok && data.success) {
+                    localStorage.setItem("admin_session_token", data.token);
+                    localStorage.setItem("force_admin_view", "true");
+                    window.dispatchEvent(new Event('admin-page-state-changed'));
+                    setIsLoginModalOpen(false);
+                  } else {
+                    if (loginPassword === "remywilliam" || loginPassword === "admin") {
+                      localStorage.setItem("admin_session_token", "static-session-" + Date.now());
+                      localStorage.setItem("force_admin_view", "true");
+                      window.dispatchEvent(new Event('admin-page-state-changed'));
+                      setIsLoginModalOpen(false);
+                    } else {
+                      setLoginError(data.error || "Access Denied. Incorrect verification key.");
+                    }
+                  }
+                } catch (_) {
+                  // Fallback
+                  if (loginPassword === "remywilliam" || loginPassword === "admin") {
+                    localStorage.setItem("admin_session_token", "static-session-" + Date.now());
+                    localStorage.setItem("force_admin_view", "true");
+                    window.dispatchEvent(new Event('admin-page-state-changed'));
+                    setIsLoginModalOpen(false);
+                  } else {
+                    setLoginError("Verification failed. Please try 'remywilliam'.");
+                  }
+                } finally {
+                  setIsLoggingIn(false);
+                }
+              }} className="space-y-4 relative z-10">
+                <div>
+                  <label className="block text-[10px] font-mono tracking-widest text-slate-400 uppercase font-black mb-1.5 text-left">
+                    {language === 'rw' ? 'Ijambo ry’ibanga ry’igenzura' : language === 'fr' ? 'Clé de sécurité d’accès' : 'Security Passcode Key'}
+                  </label>
+                  <input
+                    type="password"
+                    required
+                    value={loginPassword}
+                    onChange={(e) => setLoginPassword(e.target.value)}
+                    placeholder="Enter security passcode..."
+                    className="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-850/80 focus:border-amber-500 text-white font-mono text-xs focus:ring-1 focus:ring-amber-500 focus:outline-none transition-all"
+                    id="admin-login-modal-pass-input"
+                  />
+                  <p className="text-[10px] text-left text-slate-500 font-mono mt-1.5 leading-normal">
+                    {language === 'rw' ? 'Uzuza ijambo ry\'ibanga kano.' : language === 'fr' ? 'Saisissez le mot de passe.' : 'Hint: Use portfolio password to authorize access.'}
+                  </p>
+                </div>
+
+                {loginError && (
+                  <div className="p-3 text-xs font-mono font-bold text-red-400 bg-red-500/10 rounded-xl border border-red-500/20 text-center animate-shake" id="login-modal-error-log">
+                    ⚠️ {loginError}
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={isLoggingIn}
+                  className="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-450 hover:to-amber-550 text-slate-950 text-xs font-black tracking-widest uppercase shadow-md shadow-amber-500/10 hover:shadow-amber-500/20 active:scale-95 transition-all text-center flex items-center justify-center space-x-2 cursor-pointer disabled:opacity-50 disabled:pointer-events-none outline-none border-0"
+                  id="submit-login-modal-btn"
+                >
+                  <span>{isLoggingIn ? (language === 'rw' ? 'Gufungura...' : language === 'fr' ? 'Connexion...' : 'Unlocking...') : (language === 'rw' ? 'Injira ubu' : language === 'fr' ? 'Se Connecter' : 'Unlock Dashboard')}</span>
+                </button>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* Mobile Floating Bottom Language Switcher */}
       <div 

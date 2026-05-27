@@ -95,16 +95,22 @@ export default function Footer() {
           >
             {t('nav.journey')}
           </a>
-          <a
-            href="https://remywilliam.vercel.app/admin"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs font-semibold text-slate-500 dark:text-slate-405 hover:text-amber-500 dark:hover:text-amber-400 transition-colors uppercase tracking-widest flex items-center gap-1.5"
+          <button
+            onClick={() => {
+              const token = localStorage.getItem("admin_session_token");
+              if (token) {
+                localStorage.setItem("force_admin_view", "true");
+                window.dispatchEvent(new Event("admin-page-state-changed"));
+              } else {
+                window.dispatchEvent(new Event("trigger-admin-login-modal"));
+              }
+            }}
+            className="text-xs font-semibold text-slate-500 dark:text-slate-405 hover:text-amber-500 dark:hover:text-amber-400 transition-colors uppercase tracking-widest flex items-center gap-1.5 cursor-pointer bg-transparent border-0 outline-none"
             id="footer-admin-link"
           >
             <Lock className="w-3.5 h-3.5 text-amber-550 shrink-0" />
             <span>Admin</span>
-          </a>
+          </button>
         </nav>
 
         {/* Copyright notation */}
