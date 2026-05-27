@@ -1,0 +1,18 @@
+{
+  "name": "Remy William Portfolio",
+  "short_name": "Remy William",
+  "description": "Portfolio of Remy William, Level 5 Software Developer Student.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#090d16",
+  "theme_color": "#090d16",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

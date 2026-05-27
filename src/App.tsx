@@ -13,6 +13,7 @@ import Projects from './components/Projects';
 import Timeline from './components/Timeline';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import PWAInstallBanner from './components/PWAInstallBanner';
 
 export default function App() {
   const [isAdminPage] = useState<boolean>(() => {
@@ -313,6 +314,9 @@ export default function App() {
 
             {/* Footer and final branding */}
             <Footer />
+
+            {/* Premium Mobile PWA App Installation Onboarding Engine */}
+            <PWAInstallBanner />
           </motion.div>
         )}
       </AnimatePresence>

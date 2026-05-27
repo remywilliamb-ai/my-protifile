@@ -125,7 +125,14 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Status / Live Indicators
     'status.online': 'Online',
-    'status.active': 'Active Now'
+    'status.active': 'Active Now',
+
+    // PWA App Installation
+    'pwa.install_title': "Install Remy's App",
+    'pwa.install_desc': "Add to your home screen for instant access, offline availability, and a full mobile-app experience!",
+    'pwa.install_btn': "INSTALL AS MOBILE APP",
+    'pwa.close': "CLOSE",
+    'pwa.ios_instructions': "On iOS/Safari: Tap the 'Share' button, then scroll down and click 'Add to Home Screen'! 📱"
   },
   rw: {
     // Navigation
@@ -251,7 +258,14 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Status / Live Indicators
     'status.online': 'Kuri Murongo',
-    'status.active': 'Ahari Ubu'
+    'status.active': 'Ahari Ubu',
+
+    // PWA App Installation
+    'pwa.install_title': "Shyira App ya Remy Kuri Telefone",
+    'pwa.install_desc': "Yishyire kuri screen yawe kugira ngo uyikoreshe byoroshye ntaho ufungiye, ndetse no hanze ya interineti (offline)!",
+    'pwa.install_btn': "YISHYIRE KURI TEREFONE (INSTALL)",
+    'pwa.close': "FUNGA",
+    'pwa.ios_instructions': "Kuri iPhone/Safari: Kanda akamenyetso ka 'Share' hanyuma uhitemo 'Soma kuri Home Screen' (Add to Home Screen)! 📱"
   },
   fr: {
     // Navigation
@@ -377,6 +391,13 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Status / Live Indicators
     'status.online': 'En Ligne',
-    'status.active': 'Actif'
+    'status.active': 'Actif',
+
+    // PWA App Installation
+    'pwa.install_title': "Installer l'App de Remy",
+    'pwa.install_desc': "Ajoutez l'application à votre écran d'accueil pour un accès instantané, une utilisation hors ligne et une expérience mobile complète !",
+    'pwa.install_btn': "INSTALLER COMME APPLI",
+    'pwa.close': "FERMER",
+    'pwa.ios_instructions': "Sur iOS/Safari : Appuyez sur le bouton 'Partager', puis faites défiler et cliquez sur 'Ajouter sur l'écran d'accueil' ! 📱"
   }
 };

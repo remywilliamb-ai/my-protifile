@@ -100,7 +100,7 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="relative py-24 bg-white dark:bg-slate-950 overflow-hidden border-t border-slate-100 dark:border-slate-900 transition-colors duration-300"
+      className="relative py-24 bg-[#f1f5f9]/80 dark:bg-[#0a0f24] overflow-hidden border-t border-slate-200/60 dark:border-slate-900 transition-colors duration-300"
     >
       {/* Interactive backdrops */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
