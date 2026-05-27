@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
+import { Lock } from 'lucide-react';
 import { usePortfolio } from '../data_context';
 
 export default function Footer() {
@@ -93,6 +94,16 @@ export default function Footer() {
             className="text-xs font-semibold text-slate-500 dark:text-slate-405 hover:text-blue-600 dark:hover:text-blue-450 transition-colors uppercase tracking-widest"
           >
             {t('nav.journey')}
+          </a>
+          <a
+            href="https://remywilliam.vercel.app/admin"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs font-semibold text-slate-500 dark:text-slate-405 hover:text-amber-500 dark:hover:text-amber-400 transition-colors uppercase tracking-widest flex items-center gap-1.5"
+            id="footer-admin-link"
+          >
+            <Lock className="w-3.5 h-3.5 text-amber-550 shrink-0" />
+            <span>Admin</span>
           </a>
         </nav>
 

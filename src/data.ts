@@ -55,7 +55,7 @@ export const projectsData: Project[] = [
     liveUrl: '#fastmovie', // Custom click event triggers the exquisite interactive FastMovie demo!
     githubUrl: 'https://github.com/remywilliamb-ai/fastmovie-app',
     category: 'frontend',
-    image: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=600&auto=format&fit=crop&q=80'
+    image: '/src/assets/images/project_fastmovie_1779892865627.png'
   },
   {
     id: 'movie-series-platform',
@@ -65,7 +65,7 @@ export const projectsData: Project[] = [
     liveUrl: 'https://remy-cineverse.vercel.app',
     githubUrl: 'https://github.com/remywilliamb-ai/movie-series-platform',
     category: 'frontend',
-    image: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=600&auto=format&fit=crop&q=80'
+    image: '/src/assets/images/project_cineverse_1779892885014.png'
   },
   {
     id: 'admin-dashboard',
@@ -75,7 +75,7 @@ export const projectsData: Project[] = [
     liveUrl: 'https://remy-admin-panel.vercel.app',
     githubUrl: 'https://github.com/remywilliamb-ai/admin-dashboard',
     category: 'frontend',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&auto=format&fit=crop&q=80'
+    image: '/src/assets/images/project_admin_1779892902832.png'
   },
   {
     id: 'jwt-auth-system',
@@ -85,7 +85,7 @@ export const projectsData: Project[] = [
     liveUrl: 'https://remy-jwt-auth.vercel.app',
     githubUrl: 'https://github.com/remywilliamb-ai/jwt-auth-system',
     category: 'fullstack',
-    image: 'https://images.unsplash.com/photo-1509822929063-6b6cfc9b42f2?w=600&auto=format&fit=crop&q=80'
+    image: '/src/assets/images/project_jwt_1779892922901.png'
   },
   {
     id: 'portfolio-website',
@@ -95,7 +95,7 @@ export const projectsData: Project[] = [
     liveUrl: '#',
     githubUrl: 'https://github.com/remywilliamb-ai/portfolio-v2',
     category: 'frontend',
-    image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=600&auto=format&fit=crop&q=80'
+    image: '/src/assets/images/project_portfolio_1779892945305.png'
   },
   {
     id: 'fullstack-crud-app',
@@ -105,7 +105,7 @@ export const projectsData: Project[] = [
     liveUrl: 'https://remy-crud-manager.vercel.app',
     githubUrl: 'https://github.com/remywilliamb-ai/fullstack-crud-app',
     category: 'fullstack',
-    image: 'https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=600&auto=format&fit=crop&q=80'
+    image: '/src/assets/images/project_crud_1779892963195.png'
   }
 ];
 

@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Github, ExternalLink, Library, Compass, Play, Search, Grid, ArrowRight, Video, Tv, Film, Calendar, Clapperboard, X, ChevronLeft, ChevronRight, Sliders, Sparkles, Check } from 'lucide-react';
+import { Github, ExternalLink, Library, Compass, Play, Search, Grid, ArrowRight, Video, Tv, Film, Calendar, Clapperboard, X, ChevronLeft, ChevronRight, Sliders, Sparkles, Check, MessageSquare, Phone } from 'lucide-react';
 import { usePortfolio } from '../data_context';
 
 export default function Projects() {
-  const { projectsData, language, t } = usePortfolio();
+  const { projectsData, language, t, personalInfo } = usePortfolio();
   const [filter, setFilter] = useState<'all' | 'frontend' | 'fullstack'>('all');
   const [selectedProject, setSelectedProject] = useState<string | null>(null);
   
@@ -12,6 +12,74 @@ export default function Projects() {
   const [fastMovieSearch, setFastMovieSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState('HOME');
   const [carouselOffset, setCarouselOffset] = useState(0);
+  const [showNewsModal, setShowNewsModal] = useState(false);
+
+  const newsUpdates = [
+    {
+      id: 1,
+      date: 'May 2026',
+      title: {
+        en: 'Progressive Web App (PWA) Deployed',
+        rw: 'Sisitemu rya PWA Ryashyizweho',
+        fr: 'Application Web Progressive (PWA) Déployée'
+      },
+      desc: {
+        en: 'This portfolio is now fully integrated with custom Service Worker caches, allowing offline page rendering and instant home-screen app installs on iOS and Android.',
+        rw: 'Yinjijwemo Service Workers zituma ikora niyo haba nta internet ihari, kandi yishyirwa kuri terefone cyangwa orudinateri nk’iapp isanzwe na rimwe.',
+        fr: 'Ce portfolio intègre un script de service pour une consultation hors ligne, avec un bouton d’installation immédiat pour mobile et ordinateur.'
+      },
+      badge: 'PWA LIVE',
+      type: 'feature'
+    },
+    {
+      id: 2,
+      date: 'May 2026',
+      title: {
+        en: 'Secure local Administrator CMS Panel Activated',
+        rw: 'Ubugenzuzi bw’Ibikorwa bya Admin Bwatangiye',
+        fr: 'Activation du Panneau d’Administration CMS'
+      },
+      desc: {
+        en: 'A high-fidelity glassmorphic administrative terminal `/admin` has been created. It connects with local storage databases to safely update dynamic content and statistics on-the-fly.',
+        rw: 'Hanyujijwe urubuga runoze rwashyizwe kuri /admin rutuma dushobora guhindura amakuru kuri portfolio mu buryo bwizewe kandi bwihuse.',
+        fr: 'Un terminal d’administration haut de gamme a été mis en œuvre sur /admin. Il communique avec une base locale pour éditer les contenus et les statistiques de manière sécurisée.'
+      },
+      badge: 'CMS ACTIVE',
+      type: 'security'
+    },
+    {
+      id: 3,
+      date: 'June 2026',
+      title: {
+        en: 'Level 5 Software Development Cert Defenses',
+        rw: 'Ibizami n’Ibisobanuro bya Level 5 Software',
+        fr: 'Soutenance de Certification Core Level 5'
+      },
+      desc: {
+        en: 'Currently preparing for final practical exams and structural presentations of complex database systems and JWT token security schemas to the academic evaluations panel in Rwanda.',
+        rw: 'Ntegura ibizamini bisoza no kugaragaza imikorere ya database zikomeye ndetse no kuzitaho mu mutekano wa token za JWT mu cyiciro cya Level 5.',
+        fr: 'Préparation active des examens pratiques de fin de cycle et de la modélisation des schémas de clé JWT face au jury d’évaluation académique au Rwanda.'
+      },
+      badge: 'ACADEMICS',
+      type: 'milestone'
+    },
+    {
+      id: 4,
+      date: 'May 2026',
+      title: {
+        en: 'Responsive Web Cinematic Showcases Added',
+        rw: 'Hagashyizweho Uburyo bwa Sinema Bunoze k’Urubuga',
+        fr: 'Ajout de Vitrines Cinématographiques'
+      },
+      desc: {
+        en: 'Developed immersive modular movie demo players (FastMovie Web portal) featuring responsive media sliders, high resolution digital covers, and high-fidelity scrolling controls.',
+        rw: 'Hagashyizweho porogaramu yishimiwe ya FastMovie ikubiyemo uburyo bwo gusuzuma amashusho no kureba amafilime aryoheye ijisho.',
+        fr: 'Création d’un lecteur interactif en miniature (FastMovie) offrant un carrousel horizontal tactile, des affiches de films HD et un mode d’exploration de qualité.'
+      },
+      badge: 'DESIGN',
+      type: 'uiux'
+    }
+  ];
 
   const categories = [
     { id: 'all', label: language === 'rw' ? 'Yose' : language === 'fr' ? 'Tous les Projets' : 'All Projects' },
@@ -205,44 +273,38 @@ export default function Projects() {
                     />
                     
                     {/* Hover interactive glass button shelf overlay */}
-                    <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-[3px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4 z-20">
+                    <div className="absolute inset-0 bg-slate-950/85 backdrop-blur-[3px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-4 text-center z-20">
+                      <p className="text-amber-400 font-mono font-black text-[10px] uppercase tracking-widest mb-2 animate-pulse">
+                        {language === 'rw' ? 'Ushaka urubuga nka kano?' : language === 'fr' ? 'Besoin d’un site similaire ?' : 'Want a website like this?'}
+                      </p>
+                      
+                      {/* WhatsApp Contact to Develop Button */}
                       <a
-                        href={project.githubUrl}
+                        href={`https://wa.me/25078657980?text=${encodeURIComponent(
+                          language === 'rw' 
+                            ? `Muraho, nabonye umushinga wawe "${info.title}" nifuza ko twavugana ku buryo wankyurira urubuga rumeze nkarwo.`
+                            : language === 'fr' 
+                            ? `Bonjour, j'ai vu votre projet "${info.title}" et je souhaite discuter du développement d'un site similaire.`
+                            : `Hello, I saw your project "${info.title}" and would love to discuss developing a similar website for me.`
+                        )}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="p-3 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur border border-white/25 hover:scale-110 active:scale-95 transition-all text-xs flex items-center space-x-2"
-                        title={t('projects.view_github')}
-                        id={`proj-github-${project.id}`}
+                        className="w-full max-w-[200px] mb-2 py-2.5 px-3.5 rounded-xl bg-green-500 hover:bg-green-400 text-slate-950 font-extrabold text-xs flex items-center justify-center space-x-1.5 transition-all shadow-md active:scale-95 cursor-pointer hover:shadow-green-550/20"
+                        id={`contact-wa-hover-${project.id}`}
                       >
-                        <Github className="w-5 h-5" />
-                        <span className="font-mono text-[10px] tracking-wider font-bold">REPOS</span>
+                        <MessageSquare className="w-4 h-4 stroke-[2.5]" />
+                        <span>{language === 'rw' ? 'Koresha WhatsApp' : language === 'fr' ? 'Contact WhatsApp' : 'Contact to Develop'}</span>
                       </a>
-                      
-                      {project.liveUrl !== '#' && (
-                        project.liveUrl === '#fastmovie' ? (
-                          <button
-                            onClick={() => setSelectedProject('fastmovie')}
-                            className="p-3 rounded-full bg-blue-600 hover:bg-blue-500 text-white hover:scale-110 active:scale-95 transition-all text-xs flex items-center space-x-2 shadow-lg shadow-blue-550/35 cursor-pointer font-bold"
-                            title={t('projects.cinematic_title')}
-                            id={`proj-live-${project.id}`}
-                          >
-                            <ExternalLink className="w-5 h-5" />
-                            <span className="font-mono text-[10px] tracking-wider font-bold">LIVE DESIGN</span>
-                          </button>
-                        ) : (
-                          <a
-                            href={project.liveUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-3 rounded-full bg-blue-600 hover:bg-blue-500 text-white hover:scale-110 active:scale-95 transition-all text-xs flex items-center space-x-2 shadow-lg shadow-blue-500/35"
-                            title={t('projects.live_demo')}
-                            id={`proj-live-${project.id}`}
-                          >
-                            <ExternalLink className="w-5 h-5" />
-                            <span className="font-mono text-[10px] tracking-wider font-bold">LIVE</span>
-                          </a>
-                        )
-                      )}
+
+                      {/* Phone Call Link */}
+                      <a
+                        href="tel:078657980"
+                        className="w-full max-w-[200px] py-1.5 px-3 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-200 hover:text-white font-bold text-[10px] sm:text-xs flex items-center justify-center space-x-1.5 border border-slate-700/60 transition-all active:scale-95"
+                        id={`contact-tel-hover-${project.id}`}
+                      >
+                        <Phone className="w-3.5 h-3.5 text-blue-500" />
+                        <span>{language === 'rw' ? 'Hamagara: 078657980' : language === 'fr' ? 'Appelez: 078657980' : 'Call: 078657980'}</span>
+                      </a>
                     </div>
 
                     {/* Top-right category Pill */}
@@ -275,39 +337,37 @@ export default function Projects() {
                       ))}
                     </div>
 
-                    {/* Readability link list for mobile displays */}
-                    <div className="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800 sm:hidden">
+                    {/* Elite Order / Contact Action Bar - Persistent across all devices */}
+                    <div className="pt-4 border-t border-slate-150 dark:border-slate-800/80 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 mt-auto">
+                      <div className="flex flex-col text-left">
+                        <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400 font-medium leading-none">
+                          {language === 'rw' ? 'Ushaka urubuga nk’uru?' : language === 'fr' ? 'Besoin d’un site web ?' : 'Want your own website?'}
+                        </span>
+                        <a 
+                          href="tel:078657980" 
+                          className="text-xs font-black text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1 mt-1 leading-none"
+                        >
+                          <Phone className="w-3.5 h-3.5 text-blue-500" />
+                          <span>078657980</span>
+                        </a>
+                      </div>
+
                       <a
-                        href={project.githubUrl}
+                        href={`https://wa.me/25078657980?text=${encodeURIComponent(
+                          language === 'rw' 
+                            ? `Muraho, nabonye umushinga wawe "${info.title}" nifuza ko twavugana ku buryo wankyurira urubuga rumeze nkarwo.`
+                            : language === 'fr' 
+                            ? `Bonjour, j'ai vu votre projet "${info.title}" et je souhaite discuter du développement d'un site similaire.`
+                            : `Hello, I saw your project "${info.title}" and would love to discuss developing a similar website for me.`
+                        )}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center space-x-1 text-xs font-mono font-bold text-slate-600 dark:text-slate-450"
+                        className="inline-flex items-center justify-center space-x-1.5 px-4 py-2 rounded-xl bg-green-550 hover:bg-green-500 text-slate-950 text-xs font-black hover:scale-[1.02] active:scale-[0.98] transition-all shadow-sm cursor-pointer"
+                        id={`contact-wa-footer-${project.id}`}
                       >
-                        <Github className="w-3.5 h-3.5" />
-                        <span>Code Repo</span>
+                        <MessageSquare className="w-3.5 h-3.5 stroke-[2.5]" />
+                        <span>{language === 'rw' ? 'Bikoreshe' : language === 'fr' ? 'Développer' : 'Contact to develop'}</span>
                       </a>
-                      
-                      {project.liveUrl !== '#' && (
-                        project.liveUrl === '#fastmovie' ? (
-                          <button
-                            onClick={() => setSelectedProject('fastmovie')}
-                            className="inline-flex items-center space-x-1 text-xs font-mono font-bold text-blue-600 cursor-pointer"
-                          >
-                            <ExternalLink className="w-3.5 h-3.5" />
-                            <span>Live Design</span>
-                          </button>
-                        ) : (
-                          <a
-                            href={project.liveUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center space-x-1 text-xs font-mono font-bold text-blue-600"
-                          >
-                            <ExternalLink className="w-3.5 h-3.5" />
-                            <span>Live Demo</span>
-                          </a>
-                        )
-                      )}
                     </div>
                     
                   </div>
@@ -673,13 +733,105 @@ export default function Projects() {
 
                 {/* Tiny Blue Bottom highlight - LATEST UPDATES banner line */}
                 <div className="mt-12 text-center border-t border-blue-500/20 pt-5">
-                  <span className="text-[10px] font-black tracking-widest text-blue-600 uppercase hover:underline cursor-pointer">
-                    {language === 'rw' ? 'IBYASIGAYE BISHYA' : language === 'fr' ? 'DERNIÈRES MISES À JOUR' : 'LATEST UPDATES'}
-                  </span>
-                  <div className="w-12 h-0.5 bg-blue-600 mx-auto mt-2" />
+                  <button 
+                    onClick={() => setShowNewsModal(true)}
+                    className="text-[10px] font-black tracking-widest text-blue-600 dark:text-blue-400 uppercase hover:text-blue-500 hover:underline cursor-pointer transition-colors duration-200 inline-flex items-center space-x-1"
+                  >
+                    <Sparkles className="w-3 h-3 text-blue-500 animate-pulse animate-duration-[2000ms]" />
+                    <span>{language === 'rw' ? 'IBYASIGAYE BISHYA' : language === 'fr' ? 'DERNIÈRES MISES À JOUR' : 'LATEST UPDATES'}</span>
+                  </button>
+                  <div className="w-12 h-0.5 bg-blue-600 mx-auto mt-2 animate-pulse" />
                 </div>
               </div>
             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Immersive Glassmorphic News Logs Modal */}
+      <AnimatePresence>
+        {showNewsModal && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[1000] flex items-center justify-center p-4 sm:p-6"
+            onClick={() => setShowNewsModal(false)}
+          >
+            <motion.div 
+              initial={{ scale: 0.9, y: 30, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.9, y: 30, opacity: 0 }}
+              transition={{ type: 'spring', duration: 0.5 }}
+              className="bg-slate-900 border border-slate-800 text-white rounded-3xl p-6 sm:p-8 max-w-2xl w-full max-h-[85vh] overflow-y-auto shadow-2xl relative"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Absolutes backlights */}
+              <div className="absolute top-0 left-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute bottom-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
+
+              {/* Close button */}
+              <button 
+                onClick={() => setShowNewsModal(false)}
+                className="absolute top-5 right-5 p-2 bg-slate-800 hover:bg-slate-700 hover:text-blue-400 rounded-full cursor-pointer transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+
+              <div className="flex items-center space-x-3 mb-6">
+                <div className="p-2 bg-blue-600/20 text-blue-400 rounded-xl">
+                  <Tv className="w-5 h-5 text-blue-500" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-black font-sans uppercase tracking-tight text-white flex items-center gap-1.5">
+                    <span>{language === 'rw' ? 'IBYASIGAYE BISHYA' : language === 'fr' ? 'DERNIÈRES MISES À JOUR' : 'System Logs & News'}</span>
+                    <span className="text-xs bg-blue-600 text-white font-mono font-bold px-2 py-0.5 rounded-full uppercase tracking-wider animate-pulse">Live</span>
+                  </h3>
+                  <p className="text-[10px] font-mono text-slate-400 uppercase tracking-widest">{t('nav.developer')} • BIZIMANA NGABO REMY WILLIAM</p>
+                </div>
+              </div>
+
+              {/* Feed List */}
+              <div className="space-y-4">
+                {newsUpdates.map((news) => (
+                  <div 
+                    key={news.id}
+                    className="p-4 rounded-2xl bg-slate-950/55 border border-slate-800/60 hover:border-slate-800 hover:bg-slate-950/75 transition-all group relative overflow-hidden text-left"
+                  >
+                    <div className="absolute top-0 right-0 w-1 h-full bg-blue-600/40 group-hover:bg-blue-500 transition-colors" />
+
+                    <div className="flex flex-wrap items-center justify-between gap-2.5 mb-2.5">
+                      <span className="text-[10px] font-mono font-black text-blue-400 tracking-wider flex items-center gap-1.5">
+                        <Calendar className="w-3.5 h-3.5 text-blue-500" />
+                        <span>{news.date}</span>
+                      </span>
+
+                      <span className="text-[9px] font-mono font-bold uppercase tracking-widest bg-blue-500/10 border border-blue-500/20 text-blue-400 px-2 py-0.5 rounded">
+                        {news.badge}
+                      </span>
+                    </div>
+
+                    <h4 className="font-extrabold text-sm text-slate-100 font-sans group-hover:text-white transition-colors">
+                      {news.title[language as 'en' | 'rw' | 'fr'] || news.title.en}
+                    </h4>
+
+                    <p className="text-xs text-slate-400 leading-relaxed font-sans mt-1.5">
+                      {news.desc[language as 'en' | 'rw' | 'fr'] || news.desc.en}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Action Button */}
+              <div className="mt-8 pt-4 border-t border-slate-800 flex justify-end">
+                <button 
+                  onClick={() => setShowNewsModal(false)}
+                  className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-black text-xs uppercase tracking-widest rounded-xl transition-all cursor-pointer"
+                >
+                  {language === 'rw' ? 'Funga' : language === 'fr' ? 'Fermer' : 'Acknowledge Log'}
+                </button>
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

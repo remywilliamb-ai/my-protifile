@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Sun, Moon, Coffee, ChevronDown, Globe } from 'lucide-react';
+import { Menu, X, Sun, Moon, Coffee, ChevronDown, Globe, Lock } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import BuyMeCoffeeModal from './BuyMeCoffeeModal';
 import { usePortfolio } from '../data_context';
@@ -235,6 +235,19 @@ export default function Navbar({ isDarkMode, toggleDarkMode }: NavbarProps) {
             </AnimatePresence>
           </div>
 
+          {/* Live Admin Portal Link */}
+          <a
+            href="https://remywilliam.vercel.app/admin"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-2 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-900 transition-all duration-250 cursor-pointer flex items-center justify-center shadow-sm select-none outline-none focus:outline-none group"
+            aria-label="Admin Portal"
+            title={language === 'rw' ? 'Kujya kuri Admin' : language === 'fr' ? 'Aller à l\'administration' : 'Admin CMS Console'}
+            id="nav-admin-link-btn"
+          >
+            <Lock className="w-4 h-4 text-slate-500 dark:text-slate-400 group-hover:text-amber-500 transition-colors" />
+          </a>
+
           {/* Light/Dark Toggle Button */}
           <button
             onClick={(e) => toggleDarkMode(e)}
@@ -366,6 +379,19 @@ export default function Navbar({ isDarkMode, toggleDarkMode }: NavbarProps) {
                 </div>
                 <span className="text-[9px] font-mono font-semibold text-emerald-600 dark:text-emerald-400">{t('status.active')}</span>
               </div>
+
+              {/* Mobile Admin Link Button */}
+              <a
+                href="https://remywilliam.vercel.app/admin"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setIsOpen(false)}
+                className="w-full flex items-center justify-center space-x-2 text-sm font-mono tracking-widest text-[#f8fafc] bg-slate-900 dark:bg-slate-950 border border-slate-800 hover:border-slate-700 py-3 rounded-lg shadow-sm font-bold uppercase transition-all duration-200"
+                id="cta-mobile-admin"
+              >
+                <Lock className="w-4 h-4 text-amber-500 animate-pulse" />
+                <span>Admin CMS Console</span>
+              </a>
 
               <button
                 onClick={() => {
