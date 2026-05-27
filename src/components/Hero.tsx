@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { ArrowRight, Mail, Terminal, Database, Code, Cpu, Server, Globe } from 'lucide-react';
+import { ArrowRight, Mail, Terminal, Database, Code, Cpu, Server, Globe, Smartphone, Download } from 'lucide-react';
 import { usePortfolio } from '../data_context';
 
 // Helper component for floating icons with random positions and gentle oscillations
@@ -23,10 +23,19 @@ function FloatingIcon({ children, className, delay, duration }: { children: Reac
 }
 
 export default function Hero() {
-  const { personalInfo, language, t } = usePortfolio();
+  const { personalInfo, language, t, deferredPrompt, isStandalone, triggerInstallPrompt } = usePortfolio();
   const [text, setText] = useState('');
   const [roleIndex, setRoleIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleHeroInstall = () => {
+    if (deferredPrompt) {
+      triggerInstallPrompt();
+    } else {
+      // Dispatch custom event to trigger the detailed instructions/fallback banner
+      window.dispatchEvent(new CustomEvent("pwa-trigger-banner"));
+    }
+  };
 
   const roles = [
     language === 'en' ? 'Software Developer' : language === 'rw' ? 'Umuhanga mu gukora porogaramu' : 'Développeur Logiciel',
@@ -159,11 +168,11 @@ export default function Hero() {
           </p>
 
           {/* Action Call boundaries */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 pt-4" id="hero-actions">
+          <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-4 pt-4" id="hero-actions">
             {/* Primary Action Button */}
             <button
               onClick={() => scrollToSection('projects')}
-              className="group inline-flex items-center justify-center space-x-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-500 py-3.5 px-6 rounded-xl hover:shadow-[0_0_25px_rgba(37,99,235,0.25)] transition-all duration-300 active:scale-95 cursor-pointer font-bold"
+              className="group inline-flex items-center justify-center space-x-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-500 py-3.5 px-6 rounded-xl hover:shadow-[0_0_25px_rgba(37,99,235,0.25)] transition-all duration-300 active:scale-95 cursor-pointer font-bold animate-fade-in"
               id="cta-projects"
             >
               <span>{t('hero.explore')}</span>
@@ -179,6 +188,18 @@ export default function Hero() {
               <Mail className="w-4 h-4 text-blue-600 dark:text-blue-400" />
               <span>{t('hero.get_in_touch')}</span>
             </button>
+
+            {/* Install Mobile PWA Button */}
+            {!isStandalone && (
+              <button
+                onClick={handleHeroInstall}
+                className="inline-flex items-center justify-center space-x-2 text-sm font-extrabold text-amber-500 dark:text-amber-400 bg-amber-500/5 hover:bg-amber-500/10 dark:bg-amber-500/10 dark:hover:bg-amber-500/15 border border-amber-500/30 hover:border-amber-500/50 py-3.5 px-6 rounded-xl transition-all duration-305 active:scale-95 cursor-pointer shadow-sm hover:shadow-amber-500/10"
+                id="cta-install-app"
+              >
+                <Smartphone className="w-4 h-4 text-amber-500 stroke-[2.5]" />
+                <span>{language === 'rw' ? 'Yishyireho' : language === 'fr' ? "Installer l'Appli" : "Install App"}</span>
+              </button>
+            )}
           </div>
         </div>
 

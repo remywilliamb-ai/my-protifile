@@ -14,6 +14,10 @@ interface PortfolioDataContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
   t: (key: string) => string;
+  deferredPrompt: any;
+  isStandalone: boolean;
+  isIOS: boolean;
+  triggerInstallPrompt: () => Promise<void>;
 }
 
 const PortfolioDataContext = createContext<PortfolioDataContextType | undefined>(undefined);
@@ -32,6 +36,9 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
     }
     return 'rw';
   });
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [isStandalone, setIsStandalone] = useState<boolean>(false);
+  const [isIOS, setIsIOS] = useState<boolean>(false);
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
@@ -60,6 +67,14 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const triggerInstallPrompt = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log(`User response to install prompt: ${outcome}`);
+    setDeferredPrompt(null);
+  };
+
   useEffect(() => {
     // 1. Fetch dynamic data
     refreshData();
@@ -76,10 +91,30 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
         }
       })
       .catch((err) => console.warn("Visitor analytics tracking skipped.", err));
+
+    // 3. PWA Installation Listeners
+    const standaloneMode =
+      window.matchMedia("(display-mode: standalone)").matches ||
+      (window.navigator as any).standalone === true;
+    setIsStandalone(standaloneMode);
+
+    const userAgent = window.navigator.userAgent.toLowerCase();
+    setIsIOS(/iphone|ipad|ipod/.test(userAgent));
+
+    const handleBeforeInstallPrompt = (e: Event) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+    };
   }, []);
 
   return (
-    <PortfolioDataContext.Provider value={{ personalInfo, skillsData, projectsData, timelineData, visitorCount, isLoading, refreshData, language, setLanguage, t }}>
+    <PortfolioDataContext.Provider value={{ personalInfo, skillsData, projectsData, timelineData, visitorCount, isLoading, refreshData, language, setLanguage, t, deferredPrompt, isStandalone, isIOS, triggerInstallPrompt }}>
       {children}
     </PortfolioDataContext.Provider>
   );
@@ -99,7 +134,11 @@ export const usePortfolio = () => {
       refreshData: async () => {},
       language: 'rw' as Language,
       setLanguage: () => {},
-      t: (key: string) => key
+      t: (key: string) => key,
+      deferredPrompt: null,
+      isStandalone: false,
+      isIOS: false,
+      triggerInstallPrompt: async () => {}
     };
   }
   return context;

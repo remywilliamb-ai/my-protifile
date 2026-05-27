@@ -4,79 +4,50 @@ import { usePortfolio } from "../data_context";
 import { Download, X, Smartphone, WifiOff, Zap, CheckCircle2 } from "lucide-react";
 
 export default function PWAInstallBanner() {
-  const { t, language } = usePortfolio();
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const { t, language, deferredPrompt, isStandalone, isIOS, triggerInstallPrompt } = usePortfolio();
   const [isVisible, setIsVisible] = useState(false);
-  const [isIOS, setIsIOS] = useState(false);
-  const [isStandalone, setIsStandalone] = useState(false);
 
   useEffect(() => {
-    // 1. Check if already installed / running standalone
-    const standaloneMode =
-      window.matchMedia("(display-mode: standalone)").matches ||
-      (window.navigator as any).standalone === true;
-    setIsStandalone(standaloneMode);
-
-    // 2. Check if user dismissed this warning recently
+    // Check if user dismissed this warning recently
     const isDismissed = localStorage.getItem("pwa-dismissed") === "true";
 
-    // 3. User agent checking for iOS/Apple devices
-    const userAgent = window.navigator.userAgent.toLowerCase();
-    const isAppleMobile = /iphone|ipad|ipod/.test(userAgent);
-    setIsIOS(isAppleMobile);
-
-    // 4. Capture browser PWA installation trigger event (beforeinstallprompt)
-    const handleBeforeInstallPrompt = (e: Event) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
-      // Show PWA banner if not standalone and not previously manually dismissed
-      if (!standaloneMode && !isDismissed) {
+    // Show PWA banner automatically if not standalone and not previously manually dismissed
+    if (!isStandalone && !isDismissed) {
+      const pwaTimeout = setTimeout(() => {
         setIsVisible(true);
-      }
+      }, 5000); // Elegantly show after 5 seconds
+      return () => clearTimeout(pwaTimeout);
+    }
+  }, [isStandalone]);
+
+  useEffect(() => {
+    // Listen to custom window trigger to display the detailed install modal manually
+    const handleTriggerBanner = () => {
+      setIsVisible(true);
     };
-
-    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
-
-    // For iOS users, we want to proactively (but elegantly) show the instructions banner after some scrolling or time delay
-    if (isAppleMobile && !standaloneMode && !isDismissed) {
-      const iosTimeout = setTimeout(() => {
-        setIsVisible(true);
-      }, 5000); // Wait 5 seconds to load up nicely
-      return () => clearTimeout(iosTimeout);
-    }
-
-    // For other browsers that support PWA but hasn't fired yet (or fallback check)
-    // We can also allow them to see it
-    if (!standaloneMode && !isDismissed && !isAppleMobile) {
-      const fallbackTimeout = setTimeout(() => {
-        setIsVisible(true);
-      }, 8000);
-      return () => clearTimeout(fallbackTimeout);
-    }
-
+    window.addEventListener("pwa-trigger-banner", handleTriggerBanner);
     return () => {
-      window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+      window.removeEventListener("pwa-trigger-banner", handleTriggerBanner);
     };
   }, []);
 
+  const handleFloatingClick = async () => {
+    if (deferredPrompt) {
+      await triggerInstallPrompt();
+    } else {
+      setIsVisible(true);
+    }
+  };
+
   const handleInstallClick = async () => {
     if (!deferredPrompt) return;
-
-    // Trigger standard browser UI installation prompt
-    deferredPrompt.prompt();
-
-    // Wait for the user response
-    const { outcome } = await deferredPrompt.userChoice;
-    console.log(`User response to install prompt: ${outcome}`);
-
-    // Clean up the deferred prompt
-    setDeferredPrompt(null);
+    await triggerInstallPrompt();
     setIsVisible(false);
   };
 
   const handleDismiss = () => {
     setIsVisible(false);
-    // Persist dismiss token for 3 days so it is not intrusive
+    // Persist dismiss token so it is not intrusive
     localStorage.setItem("pwa-dismissed", "true");
   };
 
@@ -92,7 +63,7 @@ export default function PWAInstallBanner() {
             initial={{ opacity: 0, scale: 0.8, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 20 }}
-            onClick={() => setIsVisible(true)}
+            onClick={handleFloatingClick}
             className="fixed bottom-22 right-6 sm:bottom-6 sm:right-6 z-[998] cursor-pointer group flex items-center space-x-2 bg-slate-900/95 via-slate-900/95 to-slate-950/95 dark:bg-slate-950/95 backdrop-blur-xl text-white rounded-full p-2.5 sm:p-3 border border-amber-500/35 hover:border-amber-400 shadow-2xl transition-all"
             id="pwa-floating-install-icon"
             title={t("pwa.install_title")}
